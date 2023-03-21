@@ -20,8 +20,8 @@ import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate,Link } from 'react-router-dom';
 import { doc, getDoc } from "firebase/firestore"; 
-
-
+import { useDispatch} from 'react-redux';
+import { login } from '../features/user';
 
 function Copyright(props) {
   return (
@@ -39,6 +39,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Landing() {
+  const dispatch = useDispatch();
+ 
   let navigate = useNavigate();
   //For Toggle Custom Hook
   const [toggleValue, toggler] = useToggle(false);
@@ -66,7 +68,7 @@ export default function Landing() {
 
       const docRef = doc(db, "UserInfo", user.email);
       const docSnap = await getDoc(docRef);
-      
+      dispatch(login(docSnap.data()))
       setTimeout(() => {
         if(docSnap.data().profile){
           navigate('/Dashboard')

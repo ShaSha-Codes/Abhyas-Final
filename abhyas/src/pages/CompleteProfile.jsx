@@ -1,8 +1,11 @@
 import React from 'react'
-
+import ProfileEdit from '../components/ProfileEdit'
 const CompleteProfile = () => {
   return (
-    <div>CompleteProfile</div>
+    <div>
+     
+      <ProfileEdit/>  
+    </div>
   )
 }
 

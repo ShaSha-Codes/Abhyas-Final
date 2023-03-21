@@ -21,7 +21,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { auth,db } from '../firebase';
 import { useNavigate,Link } from 'react-router-dom';
 import { doc, setDoc } from "firebase/firestore"; 
-
+import { useDispatch} from 'react-redux';
+import { login } from '../features/user';
 
 
 function Copyright(props) {
@@ -41,6 +42,9 @@ const theme = createTheme();
 
 export default function SignUp() {
 
+    const dispatch = useDispatch();
+    
+    
     let navigate = useNavigate();
 
 
@@ -74,7 +78,7 @@ export default function SignUp() {
             profile:false,
           });
           
-
+        dispatch(login({email:email,profile:false}))
         setTimeout(() => {
             navigate('/CompleteProfile')
         },1000)
