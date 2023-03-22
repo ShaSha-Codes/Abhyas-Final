@@ -23,9 +23,7 @@ export default function QuizForm() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open responsive dialog
-      </Button>
+     
       <Dialog
         fullScreen={fullScreen}
         open={open}

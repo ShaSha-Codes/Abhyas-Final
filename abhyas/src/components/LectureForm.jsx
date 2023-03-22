@@ -18,7 +18,7 @@ import {doc,updateDoc,setDoc,arrayUnion} from 'firebase/firestore'
 import {ref,getDownloadURL,uploadBytesResumable} from 'firebase/storage'
 import { nanoid } from 'nanoid';
 
-export default function NoteForm(props) {
+export default function LectureForm(props) {
   let {speedDialValue, setSpeedDialValue} = props;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -44,39 +44,37 @@ export default function NoteForm(props) {
   }
 
   const handleSubmit= (e)=>{
-      let noteCode=nanoid(6)
-      let fileRef=ref(storage,`Notes/${noteCode}`)
+      let lecCode=nanoid(6)
+      let fileRef=ref(storage,`Lecture/${lecCode}`)
       const uploadTask = uploadBytesResumable(fileRef, file)
       uploadTask.on('state_changed',(snapshot)=>{},(error)=>console.log(error), async() => {
       let data= getDownloadURL(uploadTask.snapshot.ref)
 
             .then((downloadURL) => {
             
-                console.log('File available at', downloadURL);
+              console.log('File available at', downloadURL);
               
             
-            let noteRef=doc(db,"Notes",noteCode)
-            let noteData={
+            let lecRef=doc(db,"Lectures",lecCode)
+            let lecData={
               title:title,
               description:description,
               classCode:classCode,
-              noteCode:noteCode,
+              lecCode:lecCode,
               uploader:user.email,
               timestamp:Date.now(),
               file: downloadURL
             }
-            try{
-              setDoc(noteRef,noteData)
-            }catch(e){
-              console.log(e)
-            }
+          
+            setDoc(lecRef,lecData)
+          
           
 
             let classRef=doc(db,"Classes",classCode)
             updateDoc(classRef,{
-              notes:arrayUnion(noteCode)
+              lectures:arrayUnion(lecCode)
             })
-            console.log("Note Uploaded")
+            console.log("Lecture Uploaded")
             setSpeedDialValue(0)
 
 
@@ -99,12 +97,12 @@ export default function NoteForm(props) {
     
       <Dialog
         fullScreen={fullScreen}
-        open={speedDialValue===1}
+        open={speedDialValue===2}
         onClose={()=>{setSpeedDialValue(0)}}
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          Upload Notes
+          Upload Lectures
         </DialogTitle>
         <DialogContent>
           <Paper elevation={0} sx={{minWidth:'400px',margin:1}}>
@@ -112,7 +110,7 @@ export default function NoteForm(props) {
             <Stack spacing={2}>
               <TextField id="outlined-basic" label="Title" name="title" variant="outlined" onChange={handleTitleChange}/>
               <TextField id="outlined-basic" label="Description" name="description" onChange={handleDescriptionChange} multiline rows={4} variant="outlined" />
-              <label for="file">Add Notes:</label>
+              <label for="file">Add Lectures:</label>
               <input type="file" onChange={handleFileChange} id="avatar" name="file" ></input>
             </Stack>
            

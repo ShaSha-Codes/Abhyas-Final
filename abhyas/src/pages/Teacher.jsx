@@ -12,10 +12,22 @@ import VideoFileIcon from '@mui/icons-material/VideoFile';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import QuizIcon from '@mui/icons-material/Quiz';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
+import { useSelector,useDispatch} from 'react-redux';
+import {db} from '../firebase'
+import {collection,query,where,getDocs} from 'firebase/firestore'
+import QuizForm from '../components/QuizForm';
+import AssignmentForm from '../components/AssignmentForm';
+import LectureForm from '../components/LectureForm';
+import NoteForm from '../components/NoteForm';
+import AssignmentCard from '../components/AssignmentCard';
+import LectureCard from '../components/LectureCard';
+import { Grid } from '@mui/material';
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-    
+
+
     return (
       <div
         role="tabpanel"
@@ -54,14 +66,100 @@ const teacherActions = [
     { icon: <LiveTvIcon />, name: 'Go Live' }
   ];
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const Teacher = () => {
-  const [value, setValue] = React.useState(0);
-  const [speedDialValue,setSpeedDialValue] = React.useState(0)
+    let dispatch = useDispatch()
+    let user = useSelector(state => state.user.value)
+    const {classCode} = useParams()
+
+    const [value, setValue] = React.useState(0);
+    const [speedDialValue,setSpeedDialValue] = React.useState(0)
+    const [notesData,setNotesData] = React.useState([])
+    const [lecturesData,setLecturesData] = React.useState([])
+    const [assignmentsData,setAssignmentsData] = React.useState([])
+    const [quizzesData,setQuizzesData] = React.useState([])
+
+    const notesUpdater = async () => {
+        const q = query(collection(db, "Notes"), where("classCode", "==", classCode));
+        const querySnapshot = await getDocs(q);
+        let notes = []
+        querySnapshot.forEach((doc) => {
+            
+            let tempData=doc.data()
+            console.log(tempData)   
+            notes.push(<AssignmentCard {...tempData}/>)
+        });
+        setNotesData(notes)
+    }
+
+    const lecturesUpdater = async () => {
+        const q = query(collection(db, "Lectures"), where("classCode", "==", classCode));
+        const querySnapshot = await getDocs(q);
+        let lectures = []
+        querySnapshot.forEach((doc) => {
+            lectures.push(<LectureCard {...doc.data()}/>)
+        });
+        setLecturesData(lectures)
+    }
+
+    const assignmentsUpdater = async () => {
+        const q = query(collection(db, "Assignments"), where("classCode", "==", classCode));
+        const querySnapshot = await getDocs(q);
+        let assignments = []
+        querySnapshot.forEach((doc) => {
+            assignments.push(doc.data())
+        });
+        setAssignmentsData(assignments)
+    }
+
+    const quizzesUpdater = async () => {
+        const q = query(collection(db, "Quizzes"), where("classCode", "==", classCode));
+        const querySnapshot = await getDocs(q);
+        let quizzes = []
+        querySnapshot.forEach((doc) => {
+            quizzes.push(doc.data())
+        });
+        setQuizzesData(quizzes)
+    }
+
+
+    React.useEffect(() => {
+        notesUpdater()
+        lecturesUpdater()
+        // assignmentsUpdater()
+        // quizzesUpdater()
+    },[speedDialValue])
+
+
+
   console.log(speedDialValue)
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const {classCode} = useParams()
+ 
 
 
 
@@ -80,7 +178,13 @@ const Teacher = () => {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                All
+                <Grid container spacing={1}>
+                  
+                    {notesData}
+                    {lecturesData}
+                </Grid>
+                
+                
             </TabPanel>
             <TabPanel value={value} index={1}>
                 Notes
@@ -94,7 +198,11 @@ const Teacher = () => {
             <TabPanel value={value} index={4}>
                 Quizzes
             </TabPanel>
-            
+            <AssignmentForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
+            <QuizForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
+            <LectureForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
+            <NoteForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
+
         </Box>
      
     </SideBar>

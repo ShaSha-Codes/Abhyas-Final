@@ -13,7 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import { db,storage } from '../firebase';
 import { doc,updateDoc } from "firebase/firestore";
-import {  ref,uploadBytesResumable, getDownloadURL} from "firebase/storage";
+import {  ref,uploadBytesResumable, uploadBytes,getDownloadURL,} from "firebase/storage";
 import useToggle from '../hooks/useToggle';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
@@ -23,6 +23,7 @@ import { nanoid } from 'nanoid'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch,useSelector } from 'react-redux';
 import { login } from '../features/user';
+
 
 const ProfileEdit = (props) => {
   let user=useSelector(state=>state.user.value)
@@ -81,8 +82,8 @@ const ProfileEdit = (props) => {
     }
     const storageRef = ref(storage, 'ProfilePic/'+nanoid(6));
     const uploadTask = uploadBytesResumable(storageRef, formData.photoUrl);
-    uploadTask.on('state_changed',async () => {
-    await getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+    uploadTask.on('state_changed',(snapshot)=>{},(error)=>console.log(error),() => {
+      getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
       console.log('File available at', downloadURL);
       setFormData({
         ...formData,
@@ -90,8 +91,15 @@ const ProfileEdit = (props) => {
       })
       setSubmitted(true)
        });
-  }
-);
+    });
+
+
+
+
+
+
+
+
   }
 
 
