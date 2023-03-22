@@ -76,6 +76,8 @@ export default function SignUp() {
         await setDoc(doc(db, "UserInfo", email), {
             email: email,
             profile:false,
+            student:[],
+            teacher:[]
           });
           
         dispatch(login({email:email,profile:false}))

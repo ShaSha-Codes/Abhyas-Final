@@ -37,14 +37,14 @@ const ProfileEdit = (props) => {
   const [toggleValue, toggler] = useToggle(false);
   const [alertData,setAlertData]=React.useState({severity:'error',message:'Fill all Inputs'})
   const [formData,setFormData]=React.useState({
-    fname:'',
-    lname:'',
-    phoneNo:'',
-    age:'',
-    gender:'male',
+    fname:props?.user?.fname?props.user.fname:'',
+    lname:props?.user?.lname?props.user.lname:'',
+    phoneNo:props?.user?.phoneNo?props.user.phoneNo:'',
+    age:props?.user?.age?props.user.age:'',
+    gender:props?.user?.gender?props.user.gender:'male',
     photoUrl:''
   })
-  const [profilePic,setProfilePic]=React.useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
+  const [profilePic,setProfilePic]=React.useState(props?.user?.photoUrl?props.user.photoUrl:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
 
 
 
@@ -111,7 +111,7 @@ React.useEffect(() => {
       setAlertData({severity:'success',message:'Profile Updated Successfully'})
       toggler(true)
       setTimeout(() => {
-        navigate('/dashboard')
+        navigate('/Profile')
       },1000)
 
   })()

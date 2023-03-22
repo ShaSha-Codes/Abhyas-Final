@@ -71,7 +71,7 @@ export default function Landing() {
       dispatch(login(docSnap.data()))
       setTimeout(() => {
         if(docSnap.data().profile){
-          navigate('/Dashboard')
+          navigate('/Profile')
         }else{
           navigate('/CompleteProfile')
         }
