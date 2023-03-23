@@ -12,13 +12,17 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-export default function AssignmentCard(props) {
+export default function NoteCard(props) {
   const theme = useTheme();
-
+  let navigate=useNavigate()
+    const handleClick=()=>{
+        navigate('/Note/'+props.noteCode)
+    }
   return (
     <Grid md={4} sm={6}xs={12}>
-        <Card sx={{ marginBottom:'10px',marginRight:'10px',maxWidth:'500px',display: 'flex' }}>
+        <Card onClick={handleClick}  sx={{ marginBottom:'10px',marginRight:'10px',maxWidth:'500px',display: 'flex' }}>
             <CardActionArea >
                 <Stack direction="row">
 
@@ -35,7 +39,7 @@ export default function AssignmentCard(props) {
                         {props.title}
                     </Typography>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                        {props.description}
+                        {props.description.slice(0,100)+'...'}
                     </Typography>
                     </CardContent>
                 

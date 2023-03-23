@@ -113,7 +113,7 @@ export default function NoteForm(props) {
               <TextField id="outlined-basic" label="Title" name="title" variant="outlined" onChange={handleTitleChange}/>
               <TextField id="outlined-basic" label="Description" name="description" onChange={handleDescriptionChange} multiline rows={4} variant="outlined" />
               <label for="file">Add Notes:</label>
-              <input type="file" onChange={handleFileChange} id="avatar" name="file" ></input>
+              <input type="file" onChange={handleFileChange} accept="application/pdf"  id="avatar" name="file" ></input>
             </Stack>
            
           </DialogContentText>

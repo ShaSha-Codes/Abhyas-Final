@@ -1,0 +1,11 @@
+
+
+
+.annotationLayer{
+    height: 10px!important;
+}
+
+.textLayer{
+    display:none;
+}
+/* react-pdf__Page__textContent textLayer */

@@ -4,10 +4,22 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import Grid from '@mui/material/Grid';
+
+
 
 export default function LectureCard(props) {
+
+  let navigate=useNavigate()
+    const handleClick=()=>{
+        navigate('/Lecture/'+props.lecCode)
+    }
+
+
   return (
-    <Card sx={{ minWidth:300,maxWidth: 345 }}>
+    <Grid md={4} sm={6}xs={12}>
+    <Card onClick={handleClick}sx={{ minWidth:300,maxWidth: 345 }}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -23,5 +35,6 @@ export default function LectureCard(props) {
       </CardActionArea>
     
     </Card>
+    </Grid>
   );
 }

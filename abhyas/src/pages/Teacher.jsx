@@ -19,7 +19,7 @@ import QuizForm from '../components/QuizForm';
 import AssignmentForm from '../components/AssignmentForm';
 import LectureForm from '../components/LectureForm';
 import NoteForm from '../components/NoteForm';
-import AssignmentCard from '../components/AssignmentCard';
+import NoteCard from '../components/NoteCard';
 import LectureCard from '../components/LectureCard';
 import { Grid } from '@mui/material';
 
@@ -109,8 +109,8 @@ const Teacher = () => {
         querySnapshot.forEach((doc) => {
             
             let tempData=doc.data()
-            console.log(tempData)   
-            notes.push(<AssignmentCard {...tempData}/>)
+            console.log(tempData)
+            notes.push(<NoteCard {...tempData}/>)
         });
         setNotesData(notes)
     }
