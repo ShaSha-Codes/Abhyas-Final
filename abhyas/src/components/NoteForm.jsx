@@ -17,6 +17,11 @@ import {db,storage} from '../firebase'
 import {doc,updateDoc,setDoc,arrayUnion} from 'firebase/firestore'
 import {ref,getDownloadURL,uploadBytesResumable} from 'firebase/storage'
 import { nanoid } from 'nanoid';
+import LoadingScreen from './LoadingScreen';
+import Alert from '@mui/material/Alert';
+
+
+
 
 export default function NoteForm(props) {
   let {speedDialValue, setSpeedDialValue} = props;
@@ -26,9 +31,12 @@ export default function NoteForm(props) {
   let dispatch=useDispatch()
   let user=useSelector(state=>state.user.value)
 
+
+  const [progressValue,setProgressValue]=React.useState(0)
   const [title,setTitle]=React.useState('')
   const [description,setDescription]=React.useState('')
   const [file,setFile]=React.useState('')
+  const [toggle,setToggle]=React.useState(false)
 
   const handleTitleChange=(e)=>{
     setTitle(e.target.value)
@@ -44,10 +52,16 @@ export default function NoteForm(props) {
   }
 
   const handleSubmit= (e)=>{
+    if(title===''||description===''||file===''){
+      setToggle(true)
+    }else{
       let noteCode=nanoid(6)
       let fileRef=ref(storage,`Notes/${noteCode}`)
       const uploadTask = uploadBytesResumable(fileRef, file)
-      uploadTask.on('state_changed',(snapshot)=>{},(error)=>console.log(error), async() => {
+      uploadTask.on('state_changed',(snapshot)=>{
+        setProgressValue((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+
+      },(error)=>console.log(error), async() => {
       let data= getDownloadURL(uploadTask.snapshot.ref)
 
             .then((downloadURL) => {
@@ -86,11 +100,19 @@ export default function NoteForm(props) {
         }
       );
 
-
+      }
     
     
 
     }
+
+    React.useEffect(()=>{
+      setToggle(false)
+      setTitle('')
+      setDescription('')
+      setFile('')
+      setProgressValue(0)
+    },[speedDialValue])
 
 
 
@@ -107,7 +129,9 @@ export default function NoteForm(props) {
           Upload Notes
         </DialogTitle>
         <DialogContent>
+         
           <Paper elevation={0} sx={{minWidth:'400px',margin:1}}>
+          {toggle && <Alert sx={{mb:1}}severity="error" onClose={() => setToggle(false)}>Please Fill All fields</Alert>}
           <DialogContentText>
             <Stack spacing={2}>
               <TextField id="outlined-basic" label="Title" name="title" variant="outlined" onChange={handleTitleChange}/>
@@ -128,6 +152,10 @@ export default function NoteForm(props) {
           </Button>
         </DialogActions>
       </Dialog>
+      {
+        progressValue>0 && progressValue<100 && <LoadingScreen progressValue={progressValue}/>
+      }
+  
     </div>
   );
 }

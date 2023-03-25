@@ -10,6 +10,7 @@ import Certificate from './pages/Certificate'
 import Teacher from './pages/Teacher'
 import Student from './pages/Student'
 import Note from './pages/Note'
+import PageNotFound from './pages/PageNotFound'
 import Lecture from './pages/Lecture'
 import { Routes,Route } from 'react-router-dom'
 
@@ -28,6 +29,7 @@ const App = () => {
         <Route path='/Student/:classCode'element={<Student/>} />
         <Route path='/Note/:noteCode'element={<Note/>} />
         <Route path='/Lecture/:lecCode'element={<Lecture/>} />
+        <Route path='/*' element={<PageNotFound/>} />
     </Routes>
   )
 }

@@ -6,9 +6,17 @@ import {db} from '../firebase'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material'
+import useLogout from '../hooks/useLogout'
+
 const Lecture = () => {
   const {lecCode} = useParams()
   const [lecture,setLecture] = React.useState(null)
+  const checker=useLogout()
+
+
+  React.useEffect(()=>{
+    checker("Lectures",lecCode)
+  })
 
   React.useEffect(()=>{
     const getLecture = async () => {

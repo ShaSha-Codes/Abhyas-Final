@@ -26,8 +26,9 @@ import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import CardMembershipIcon from '@mui/icons-material/CardMembership';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
+import { useDispatch,useSelector } from 'react-redux';
+import { getAuth, signOut } from "firebase/auth";
+import {logout} from '../features/user'
 
 const drawerWidth = 240;
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -105,7 +106,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 
 export default function SideBar(props) {
-
+  let dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   let navigate = useNavigate();
 
@@ -121,7 +122,28 @@ export default function SideBar(props) {
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+    
   };
+
+  const handleSettings = (text) => {
+    if (text === 'Logout') {
+      handleLogout();
+    } else {
+      navigate('/' + text);
+    }
+  }
+
+  const handleLogout = () => {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      dispatch(logout())
+      navigate('/')
+    }).catch((error) => {
+      console.log("oooops")
+      console.log(error)
+    });
+  }
+
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -180,7 +202,7 @@ export default function SideBar(props) {
           <Box sx={{ flexGrow: 0,marginLeft: "auto"  }} >
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={user.photoUrl} />
+                <Avatar alt="Profile Photo" src={user.photoUrl} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -200,7 +222,7 @@ export default function SideBar(props) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={()=>handleSettings(setting)}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

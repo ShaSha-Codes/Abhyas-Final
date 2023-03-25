@@ -12,7 +12,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import {useSelector } from 'react-redux';
+import {useSelector,useDispatch } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -25,6 +25,9 @@ import ProfileEdit from '../components/ProfileEdit';
 
 const Dashboard = () => {
   let user = useSelector(state => state.user.value);
+  let dispatch = useDispatch();
+
+  
   console.log(user.photoUrl)
   const theme = useTheme();
   const [toggleValue,toggler]=useToggle(false);

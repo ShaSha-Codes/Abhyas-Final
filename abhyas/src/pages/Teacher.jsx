@@ -10,6 +10,9 @@ import SpeedDialer from '../components/SpeedDialer';
 import NotesIcon from '@mui/icons-material/Notes';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
 import QuizIcon from '@mui/icons-material/Quiz';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { useSelector,useDispatch} from 'react-redux';
@@ -22,7 +25,8 @@ import NoteForm from '../components/NoteForm';
 import NoteCard from '../components/NoteCard';
 import LectureCard from '../components/LectureCard';
 import { Grid } from '@mui/material';
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useLogout from '../hooks/useLogout';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -102,6 +106,15 @@ const Teacher = () => {
     const [assignmentsData,setAssignmentsData] = React.useState([])
     const [quizzesData,setQuizzesData] = React.useState([])
 
+
+    const checker=useLogout()
+    React.useEffect(() => {
+        checker("teacher",classCode)
+    },[])
+
+
+
+
     const notesUpdater = async () => {
         const q = query(collection(db, "Notes"), where("classCode", "==", classCode));
         const querySnapshot = await getDocs(q);
@@ -178,19 +191,98 @@ const Teacher = () => {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
+
+            {
+              notesData.length>0 &&
+              
+            <Accordion defaultExpanded={true}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Notes</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
                 <Grid container spacing={1}>
-                  
                     {notesData}
-                    {lecturesData}
                 </Grid>
-                
+              </AccordionDetails>
+            </Accordion>
+            
+            }
+          { lecturesData.length>0 &&
+            <Accordion defaultExpanded={true}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Lectures</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+              <Grid container spacing={1}>
+                  {lecturesData}
+              </Grid>
+              </AccordionDetails>
+            </Accordion>
+
+
+}
+{/* 
+
+          { assignmentsData.length>0 &&
+            <Accordion defaultExpanded={true}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Assignments</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container spacing={1}>
+                    {notesData}
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+          }
+
+
+          { quizzesData.length>0 &&
+
+            <Accordion defaultExpanded={true}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Quizzes</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container spacing={1}>
+                    {notesData}
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+          }
+              */
+              
+        
+              
+              }
+            
                 
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Notes
+                  <Grid container spacing={1}>
+                      {notesData}
+                  </Grid>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Lectures
+                <Grid container spacing={1}>
+                  {lecturesData}
+                </Grid>
             </TabPanel>
             <TabPanel value={value} index={3}>
                 Assignments

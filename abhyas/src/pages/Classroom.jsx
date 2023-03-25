@@ -15,7 +15,7 @@ import ClassJoiner from '../components/ClassJoiner';
 import { useSelector } from 'react-redux';
 import {db} from '../firebase'
 import {collection,query,where,getDocs} from 'firebase/firestore'
-
+import Error from '../components/Error';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -152,6 +152,7 @@ const Classroom = () => {
 
           </TabPanel>
         </Box>
+        <Error />
     </SideBar>
   )
 }

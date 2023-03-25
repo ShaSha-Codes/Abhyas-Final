@@ -13,15 +13,20 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import DownloadIcon from '@mui/icons-material/Download';
-
+import useLogout from '../hooks/useLogout';
 
 const Note = () => {
     const {noteCode} = useParams()
-    
     const [note,setNote] = React.useState('')
     const [numPages, setNumPages] = React.useState(null);
     const [pageNumber, setPageNumber] = React.useState(1);
+    const checker=useLogout()
 
+    React.useEffect(()=>{
+        checker("Notes",noteCode)
+    },[])
+
+    
     const leftClickHandler=()=>{
         if(pageNumber>1){
             setPageNumber(prevPageNumber=>prevPageNumber-1)

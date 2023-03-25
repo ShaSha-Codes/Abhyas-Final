@@ -20,9 +20,9 @@ import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate,Link } from 'react-router-dom';
 import { doc, getDoc } from "firebase/firestore"; 
-import { useDispatch} from 'react-redux';
+import { useSelector,useDispatch} from 'react-redux';
 import { login } from '../features/user';
-
+import Error from '../components/Error';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -39,6 +39,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Landing() {
+  let user=useSelector(state=>state.user.value)
+  console.log(user)
   const dispatch = useDispatch();
  
   let navigate = useNavigate();
@@ -203,6 +205,7 @@ export default function Landing() {
           </Box>
         </Grid>
       </Grid>
+      <Error />
     </ThemeProvider>
   );
 }
