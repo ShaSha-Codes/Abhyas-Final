@@ -21,8 +21,6 @@ import LoadingScreen from './LoadingScreen';
 import Alert from '@mui/material/Alert';
 
 
-
-
 export default function NoteForm(props) {
   let {speedDialValue, setSpeedDialValue} = props;
   const theme = useTheme();

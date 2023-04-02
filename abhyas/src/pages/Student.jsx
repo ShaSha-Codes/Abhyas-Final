@@ -23,6 +23,7 @@ import NoteCard from '../components/NoteCard';
 import LectureCard from '../components/LectureCard';
 import { Grid } from '@mui/material';
 import useLogout from '../hooks/useLogout';
+import ChatRoom from '../components/ChatRoom';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -126,6 +127,7 @@ const Teacher = () => {
                     <Tab label="Lectures" {...a11yProps(2)} />
                     <Tab label="Assignments" {...a11yProps(3)} />
                     <Tab label="Quizzes" {...a11yProps(4)} />
+                    <Tab label="Chat" {...a11yProps(5)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -148,7 +150,9 @@ const Teacher = () => {
             <TabPanel value={value} index={4}>
                 Quizzes
             </TabPanel>
-          
+            <TabPanel value={value} index={5}>
+                <ChatRoom/>
+            </TabPanel>
 
         </Box>
      

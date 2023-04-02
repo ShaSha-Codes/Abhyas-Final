@@ -27,6 +27,9 @@ import LectureCard from '../components/LectureCard';
 import { Grid } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useLogout from '../hooks/useLogout';
+import ChatRoom from '../components/ChatRoom';
+import { useNavigate } from 'react-router-dom';
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -97,6 +100,10 @@ const teacherActions = [
 const Teacher = () => {
     let dispatch = useDispatch()
     let user = useSelector(state => state.user.value)
+    let navigate=useNavigate()
+
+
+
     const {classCode} = useParams()
 
     const [value, setValue] = React.useState(0);
@@ -122,7 +129,7 @@ const Teacher = () => {
         querySnapshot.forEach((doc) => {
             
             let tempData=doc.data()
-            console.log(tempData)
+     
             notes.push(<NoteCard {...tempData}/>)
         });
         setNotesData(notes)
@@ -164,6 +171,9 @@ const Teacher = () => {
         lecturesUpdater()
         // assignmentsUpdater()
         // quizzesUpdater()
+        if(speedDialValue===5){
+          navigate("/Teacher/Live/" + classCode)
+        }
     },[speedDialValue])
 
 
@@ -188,6 +198,7 @@ const Teacher = () => {
                     <Tab label="Lectures" {...a11yProps(2)} />
                     <Tab label="Assignments" {...a11yProps(3)} />
                     <Tab label="Quizzes" {...a11yProps(4)} />
+                    <Tab label="Chat" {...a11yProps(5)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -289,6 +300,9 @@ const Teacher = () => {
             </TabPanel>
             <TabPanel value={value} index={4}>
                 Quizzes
+            </TabPanel>
+            <TabPanel value={value} index={5}>
+                <ChatRoom/>
             </TabPanel>
             <AssignmentForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
             <QuizForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
