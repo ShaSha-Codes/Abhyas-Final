@@ -23,12 +23,13 @@ import { doc, getDoc } from "firebase/firestore";
 import { useSelector,useDispatch} from 'react-redux';
 import { login } from '../features/user';
 import Error from '../components/Error';
+import StudyDesk from '../components/StudyDesk';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Abhyas
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -110,15 +111,27 @@ export default function Landing() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundColor: '#f5f5f5',
             backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
           }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        >
+        <StudyDesk />
+        </Grid>
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square
+        sx={{backgroundColor:'#f6fafa'}}
+        >
+          
+          <Paper elevation={0}
+          sx={{
+            m: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginTop:'10vh',
+            backgroundColor:'#f6fafa'
+            
+          }}
+          >
           <Box
             sx={{
               my: 8,
@@ -128,7 +141,7 @@ export default function Landing() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#3c7979' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -186,7 +199,9 @@ export default function Landing() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, backgroundColor:'#3c7979',"&:hover": {
+                  backgroundColor: '#285252'
+                }, }}
               >
                 Sign In
               </Button>
@@ -203,6 +218,7 @@ export default function Landing() {
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
+          </Paper>
         </Grid>
       </Grid>
       <Error />

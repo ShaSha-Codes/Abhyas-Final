@@ -23,6 +23,7 @@ import { useNavigate,Link } from 'react-router-dom';
 import { doc, setDoc } from "firebase/firestore"; 
 import { useDispatch} from 'react-redux';
 import { login } from '../features/user';
+import { Paper } from '@mui/material';
 
 
 function Copyright(props) {
@@ -30,7 +31,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Abhyas
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -118,6 +119,18 @@ export default function SignUp() {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+        <Paper elevation={5}
+        sx={{
+          m: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop:'10vh',
+          padding:'2rem',
+          paddingTop:'0rem',
+          borderRadius:'1rem',
+          
+        }}>
         <Box
           sx={{
             marginTop: 8,
@@ -126,7 +139,7 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: '#3c7979' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -199,7 +212,9 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, backgroundColor:'#3c7979',"&:hover": {
+                backgroundColor: '#285252'
+              }, }}
             >
               Sign Up
             </Button>
@@ -212,6 +227,7 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
+        </Paper>
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
