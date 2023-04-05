@@ -16,11 +16,11 @@ export default function SpeedDialer({actions,speedDialValue,setSpeedDialValue}) 
     handleClose()
   }
   return (
-    <Box >
+    <Box sx={{}} >
       <Backdrop open={open} />
       <SpeedDial
         ariaLabel="SpeedDial tooltip example"
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        sx={{ position: 'fixed', bottom: 16, right: 16,'& .MuiFab-primary': {bgcolor:"#3c7979","&:hover": {backgroundColor: '#285252' }, } }}
         icon={<SpeedDialIcon />}
         onClose={handleClose}
         onOpen={handleOpen}

@@ -15,8 +15,9 @@ const CompleteProfile = () => {
 
   return (
     <div>
-     
+    <div style={{display: 'flex', alignItems: 'center', flexDirection:'column'}}>
       <ProfileEdit/>  
+      </div>
     </div>
   )
 }
