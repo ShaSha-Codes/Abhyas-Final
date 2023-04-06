@@ -47,34 +47,40 @@ const FileContent=({content,file,name})=>{
 }
 
 
+
+
 const ChatBubble = (props) => {
     const user = useSelector(state => state.user.value)
     const [sender,setSender]=React.useState({})
-    const [color,setColor]=React.useState({})
+    const [color,setColor]=React.useState('green')
 
     React.useEffect(()=>{
         const docRef=doc(db,'UserInfo',props.sender)
         const getSender=async()=>{
             const docSnap=await getDoc(docRef)
             if(docSnap.exists()){
-                setSender(docSnap.data())   
+                setSender(docSnap.data())
+                const asciiCode1 = docSnap.data().email.charCodeAt(0);
+                const asciiCode2 = docSnap.data().email.charCodeAt(2)?docSnap.data().email.charCodeAt(2):docSnap.data().email.charCodeAt(1);
+                const asciiCode3 = docSnap.data().email.charCodeAt(8)?docSnap.data().email.charCodeAt(8):docSnap.data().email.charCodeAt(2);
+                const colorNum = asciiCode1.toString() + asciiCode2.toString() + asciiCode3.toString();
+                var num = Math.round(0xffffff * parseInt(colorNum));
+                var r = num >> 5 & 125;
+                var g = num >> 8 & 125;
+                var b = num & 125;
+                setColor('rgb(' + r + ', ' + g + ', ' + b + ')' )   
             }
-            const asciiCode1 = sender?.email.charCodeAt(0);
-            const asciiCode2 = sender?.email.charCodeAt(2)?sender?.email.charCodeAt(2):sender?.email.charCodeAt(1);
-            const asciiCode3 = sender?.email.charCodeAt(8)?sender?.email.charCodeAt(8):sender?.email.charCodeAt(2);
-            const colorNum = asciiCode1.toString() + asciiCode2.toString() + asciiCode3.toString();
-            var num = Math.round(0xffffff * parseInt(colorNum));
-            var r = num >> 5 & 125;
-            var g = num >> 8 & 125;
-            var b = num & 125;
-            setColor('rgb(' + r + ', ' + g + ', ' + b + ')' )
+           
         }
         
         getSender()
+
        
 
     
     },[])
+
+   
 
 
   return (
