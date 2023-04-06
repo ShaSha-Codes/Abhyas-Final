@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import { useSelector } from 'react-redux';
 import {doc,getDoc} from 'firebase/firestore'
 import {db} from '../firebase'
-
+import { Typography } from '@mui/material';
 const FileContent=({content,file,name})=>{
 
 
@@ -50,16 +50,30 @@ const FileContent=({content,file,name})=>{
 const ChatBubble = (props) => {
     const user = useSelector(state => state.user.value)
     const [sender,setSender]=React.useState({})
+    const [color,setColor]=React.useState({})
 
     React.useEffect(()=>{
         const docRef=doc(db,'UserInfo',props.sender)
         const getSender=async()=>{
             const docSnap=await getDoc(docRef)
             if(docSnap.exists()){
-                setSender(docSnap.data())
+                setSender(docSnap.data())   
             }
+            const asciiCode1 = sender?.email.charCodeAt(0);
+            const asciiCode2 = sender?.email.charCodeAt(2)?sender?.email.charCodeAt(2):sender?.email.charCodeAt(1);
+            const asciiCode3 = sender?.email.charCodeAt(8)?sender?.email.charCodeAt(8):sender?.email.charCodeAt(2);
+            const colorNum = asciiCode1.toString() + asciiCode2.toString() + asciiCode3.toString();
+            var num = Math.round(0xffffff * parseInt(colorNum));
+            var r = num >> 5 & 125;
+            var g = num >> 8 & 125;
+            var b = num & 125;
+            setColor('rgb(' + r + ', ' + g + ', ' + b + ')' )
         }
+        
         getSender()
+       
+
+    
     },[])
 
 
@@ -75,11 +89,14 @@ const ChatBubble = (props) => {
         :
         <Alert 
             sx={{display:'flex',marginRight: 'auto',
-            float:'right',justifyContent:'space-between',alignItems:'center',width:'fit-content',margin:'10px',padding:'10px',borderRadius:'20px',backgroundColor:'lightblue',color:'black'}}
+            float:'right',justifyContent:'space-between',alignItems:'center',width:'fit-content',margin:'10px',padding:'10px',borderRadius:'20px',backgroundColor:'#b7d7d7',color:'black'}}
             icon={false} 
             severity="info">
                 <Stack direction="row"  sx={{wordBreak: 'break-all',display:'flex',justifyContent:'space-between',alignItems:'center',width:'fit-content',borderRadius:'20px'}} >
-                    {<FileContent content={props.type} file={props.type==="message"?props.message:props.file} name={props.name}/>}   
+                <Stack direction="column"  sx={{wordBreak: 'break-all',display:'flex',alignItems:'flex-start',width:'fit-content',borderRadius:'20px'}} >
+                    <Typography color={color} variant='h7'><strong>{sender?.email}</strong></Typography>
+                    {<FileContent content={props.type} file={props.type==="message"?props.message:props.file} name={props.name}/>}  
+                </Stack>
                         <Avatar sx={{marginLeft:"12px"}} alt="User" src={sender?.photoUrl} />
                 </Stack>
         </Alert>    

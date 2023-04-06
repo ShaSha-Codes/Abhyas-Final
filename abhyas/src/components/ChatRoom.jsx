@@ -145,12 +145,12 @@ const scrollableDivRef = React.useRef(null);
 
   return (
     <div>
-        <Stack ref={scrollableDivRef} sx={{overflow: 'auto',height:'70vh'}}>
+        <Stack ref={scrollableDivRef} sx={{overflow: 'auto',height:'62vh',width:'90vw'}}>
            {messageData}
           
         </Stack>
         <Stack direction="row">
-            <TextField  value={message} onChange={(e)=>setMessage(e.target.value)}fullWidth sx={{marginTop:'0.4em',marginRight:'0.3em'}} variant="outlined" label="Message" onKeyDown={handleMessageSubmit}/>
+            <TextField  value={message} onChange={(e)=>setMessage(e.target.value)}fullWidth sx={{marginTop:'0.4em',marginRight:'0.5em'}} variant="outlined" label="Message" onKeyDown={handleMessageSubmit}/>
             <IconButton aria-label="Attachment" color="info" onClick={handleClickOpen}>
                 <AttachFileIcon />
             </IconButton>

@@ -22,15 +22,16 @@ export default function NoteCard(props) {
     }
   return (
     <Grid md={4} sm={6}xs={12}>
-        <Card onClick={handleClick}  sx={{ marginBottom:'10px',marginRight:'10px',maxWidth:'500px',display: 'flex' }}>
+        <Card onClick={handleClick}  sx={{ marginBottom:'10px',marginRight:'10px',width:'95%',maxWidth:'500px',maxHeight:'120px',display: 'flex' }}>
             <CardActionArea >
                 <Stack direction="row">
 
                     
                     <CardMedia
                     component="img"
-                    sx={{ width: 151 }}
-                    image={"https://api.dicebear.com/5.x/icons/svg?seed="+props.title}
+                    sx={{ width: 120,height: 120 }}
+                    
+                    image={`https://api.dicebear.com/6.x/identicon/svg?seed=`+props.title+`&scale=90&backgroundRotation=0,360,90,80,100,110,180,190,280,300,290&row1=ooxoo,oxxxo,xoxox&backgroundColor=D2E7E7`}
                     alt="Live from space album cover"
                 />
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
