@@ -31,6 +31,7 @@ import ChatRoom from '../components/ChatRoom';
 import { useNavigate } from 'react-router-dom';
 
 
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -172,7 +173,7 @@ const Teacher = () => {
         // assignmentsUpdater()
         // quizzesUpdater()
         if(speedDialValue===5){
-          navigate("/Teacher/Live/" + classCode)
+          navigate("/Teacher/Live/Create/" + classCode)
         }
     },[speedDialValue])
 
