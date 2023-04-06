@@ -12,7 +12,9 @@ import Student from './pages/Student'
 import Note from './pages/Note'
 import PageNotFound from './pages/PageNotFound'
 import Lecture from './pages/Lecture'
-import Live from './pages/Live'
+import GoLive from './pages/GoLive'
+import JoinLive from './pages/JoinLive'
+
 import { Routes,Route } from 'react-router-dom'
 
 const App = () => {
@@ -30,7 +32,8 @@ const App = () => {
         <Route path='/Student/:classCode'element={<Student/>} />
         <Route path='/Note/:noteCode'element={<Note/>} />
         <Route path='/Lecture/:lecCode'element={<Lecture/>} />
-        <Route path='/Teacher/Live/:classCode' element={<Live/>} />
+        <Route path='/Teacher/Live/Create/:classCode' element={<GoLive/>} />
+        <Route path='/Student/Live/Join/:classCode' element={<JoinLive/>} />
         <Route path='/*' element={<PageNotFound/>} />
     </Routes>
   )

@@ -42,7 +42,7 @@ const pc = new RTCPeerConnection(servers);
   
 const Live = () => {
     const [webcamActive, setWebcamActive] = React.useState(false);
-    const [roomId, setRoomId] = React.useState("");
+    const [roomId, setRoomId] = React.useState([]);
     const localRef =React.useRef();
     const remoteRef = React.useRef();
 

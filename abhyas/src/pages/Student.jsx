@@ -1,12 +1,11 @@
 import React from 'react'
 import SideBar from '../components/SideBar'
-import { useParams } from 'react-router-dom'
+import { useNavigate,useParams } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import SpeedDialer from '../components/SpeedDialer';
 import NotesIcon from '@mui/icons-material/Notes';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -24,6 +23,9 @@ import LectureCard from '../components/LectureCard';
 import { Grid } from '@mui/material';
 import useLogout from '../hooks/useLogout';
 import ChatRoom from '../components/ChatRoom';
+import Fab from '@mui/material/Fab';
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -94,6 +96,7 @@ const teacherActions = [
 
 
 const Teacher = () => {
+  let navigate = useNavigate()
     let dispatch = useDispatch()
     let user = useSelector(state => state.user.value)
     const {classCode} = useParams()
@@ -155,9 +158,13 @@ const Teacher = () => {
             </TabPanel>
 
         </Box>
-     
+        <Fab sx={{ position: "fixed",
+    bottom: "20px",
+    right: "20px"}}color="primary" aria-label="join" onClick={()=>navigate('/Student/Live/Join/'+classCode)}>
+        <PlayCircleFilledWhiteIcon />
+      </Fab>
     </SideBar>
-    {/* <SpeedDialer speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}  actions={teacherActions}/> */}
+
     </>
    
   )
