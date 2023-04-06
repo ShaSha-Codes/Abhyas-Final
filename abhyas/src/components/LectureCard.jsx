@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
+import GeoPattern from 'geopattern';
 
 
 
@@ -16,15 +17,17 @@ export default function LectureCard(props) {
         navigate('/Lecture/'+props.lecCode)
     }
 
+    var pattern = GeoPattern.generate(props.title);
+    var imgURL = pattern.toDataUri();
 
   return (
     <Grid md={4} sm={6}xs={12}>
-    <Card onClick={handleClick}sx={{ minWidth:300,maxWidth: 345 }}>
+    <Card onClick={handleClick} sx={{ marginBottom:'10px',marginRight:'10px',width:'95%',maxWidth:'500px',display: 'flex' }}>
       <CardActionArea>
         <CardMedia
           component="img"
           height="180"
-          image="https://api.dicebear.com/5.x/fun-emoji/svg"
+          image={imgURL}
           alt="green iguana"
         />
         <CardContent>

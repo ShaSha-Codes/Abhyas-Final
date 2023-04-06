@@ -150,10 +150,10 @@ const scrollableDivRef = React.useRef(null);
           
         </Stack>
         <Stack direction="row">
-            <TextField  value={message} onChange={(e)=>setMessage(e.target.value)}fullWidth sx={{marginTop:'0.4em',marginRight:'0.5em'}} variant="outlined" label="Message" onKeyDown={handleMessageSubmit}/>
-            <IconButton aria-label="Attachment" color="info" onClick={handleClickOpen}>
-                <AttachFileIcon />
+        <IconButton aria-label="Attachment" color="info" onClick={handleClickOpen}>
+                <AttachFileIcon sx={{color:'#285252', marginRight:1}} />
             </IconButton>
+            <TextField  value={message} onChange={(e)=>setMessage(e.target.value)} sx={{marginTop:'0.4em',marginRight:'0.5em', width:'92%'}} variant="outlined" label="Message" onKeyDown={handleMessageSubmit}/>
             
         </Stack>
 
