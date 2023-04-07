@@ -41,6 +41,7 @@ const ClassMaker = ({openTeacher,setOpenTeacher}) => {
             quizzes:[],
             lectures:[],
             notes:[],
+            live:false
         }
         const docRef = doc(db, "Classes", classCode);
         await setDoc(docRef, classData);

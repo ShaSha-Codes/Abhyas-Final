@@ -25,6 +25,7 @@ import useLogout from '../hooks/useLogout';
 import ChatRoom from '../components/ChatRoom';
 import Fab from '@mui/material/Fab';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
+import Error from '../components/Error';
 
 
 function TabPanel(props) {
@@ -162,7 +163,8 @@ const Teacher = () => {
     bottom: "20px",
     right: "20px"}}color="primary" aria-label="join" onClick={()=>navigate('/Student/Live/Join/'+classCode)}>
         <PlayCircleFilledWhiteIcon />
-      </Fab>
+      </Fab>  
+      <Error/>
     </SideBar>
 
     </>

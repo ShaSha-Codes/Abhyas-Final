@@ -34,9 +34,32 @@ const JoinLive = () => {
   const localRef =React.useRef();
   const remoteRef = React.useRef();
   let pc
+
+  React.useEffect(()=>{
+    const checker=async()=>{
+      let docRef=doc(db,"Classes",classCode)
+     
+      onSnapshot(docRef,(doc)=>{
+        if(doc.data().live===false){
+     
+          
+          navigate('/Student/'+classCode,{state:{error:"Live session ended"}})
+        }
+      })
+      }
+    checker()
+  },[])
+
+
+
   React.useEffect(() => {
+   
+    
     pc = new RTCPeerConnection(servers);
     const getRoomId = async () => {
+      let docRef2=doc(db,"Classes",classCode)
+      const docSnap2 = await getDoc(docRef2);
+      if(docSnap2.data().live===true){
       const docRef= doc(db,"PendingList",classCode,'data',user.email)
       const docSnap = await getDoc(docRef);
       await setDoc(docRef,{joined:true},{merge:true})
@@ -48,6 +71,9 @@ const JoinLive = () => {
         console.log("No such document!");
       }
 
+    }else{
+      navigate('/Student/'+classCode,{state:{error:"Live session ended"}})
+    }
     }
     getRoomId()
   },[])
@@ -58,8 +84,6 @@ const JoinLive = () => {
       window.removeEventListener('beforeunload', disconnect);
     };
   },[])
-
-
 
 
 

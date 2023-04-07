@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import {db} from '../firebase'
-import {collection,query,where,getDoc,doc,setDoc,addDoc,updateDoc,onSnapshot } from 'firebase/firestore'
+import {collection,query,where,getDoc,doc,setDoc,addDoc,updateDoc,onSnapshot,deleteDoc } from 'firebase/firestore'
 import { useParams } from 'react-router-dom';
 import Fab from '@mui/material/Fab';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -16,7 +16,7 @@ import MicOffIcon from '@mui/icons-material/MicOff';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import ScreenShareIcon from '@mui/icons-material/ScreenShare';
-
+import { useNavigate } from 'react-router-dom';
 
   const servers = {
     iceServers: [
@@ -34,15 +34,36 @@ import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 
 
 const GoLive = () => {
+    let navigate=useNavigate()
     const {classCode}=useParams();
     const [webcamActive, setWebcamActive] = React.useState(false);
     const [micActive, setMicActive] = React.useState(false);
     const [videoActive, setVideoActive] = React.useState(false);
+    const [liveStudents,setLiveStudents]=React.useState([
+        {email:'',joined:false},
+        {email:'',joined:false},
+        {email:'',joined:false},
+        {email:'',joined:false},
+        {email:'',joined:false},
+    ])
     let connections=[]
+
+
 
     let localStream
     const localRef =React.useRef();
-    let remoteRef = [React.useRef(),React.useRef()];
+    let remoteRef = [
+        React.useRef(),
+        React.useRef(),
+        React.useRef(),
+        React.useRef(),
+        React.useRef(),
+    ]
+
+    
+
+   
+
 
     React.useEffect(() => {
         
@@ -69,16 +90,37 @@ const GoLive = () => {
         const data=classRoom.data()
         for(let i=0;i<data.students.length;i++){
             onSnapshot(doc(db,"PendingList",classCode,'data',data.students[i]), (doc) => {
+                if(doc.data().joined===true){
+                    setLiveStudents(prevLiveStudents=>{
+                        const newLiveStudents=[...prevLiveStudents]
+                        if(newLiveStudents[i].email===doc.data().email){
+                            newLiveStudents[i].joined=true
+                        }
+                    
+                        return newLiveStudents
+                    })
+                }else{
+                    setLiveStudents(prevLiveStudents=>{
+                        const newLiveStudents=[...prevLiveStudents]
+                        if(newLiveStudents[i].email===doc.data().email){
+                            newLiveStudents[i].joined=false
+                        }
+                    
+                        return newLiveStudents
+                    })
+                }
+                
                 if(doc.data().codeGenerationNeeded===true){
                     createSources(data.students[i],i)
+                 
                 }
             })
 
-            createSources(data.students[i],i)
+      
         
         }
     }
-    onSnaps()
+        onSnaps()
     },[]);
     
 
@@ -103,7 +145,9 @@ const GoLive = () => {
 
     const createSources = async (email,index) => {
         const pc = new RTCPeerConnection(servers);
-        
+      
+
+
         connections.push(pc)
         const remoteStream = new MediaStream();
 
@@ -118,6 +162,13 @@ const GoLive = () => {
         };
 
         localRef.current.srcObject = localStream;
+
+        setLiveStudents(prevLiveStudents=>{
+            const newLiveStudents=[...prevLiveStudents]
+            newLiveStudents[index].email=email
+            return newLiveStudents
+        })
+
         remoteRef[index].current.srcObject = remoteStream;
         setWebcamActive(true);
 
@@ -166,6 +217,38 @@ const GoLive = () => {
     
     }
 
+    React.useEffect(()=>{
+        window.addEventListener('beforeunload', disconnect);
+        return () => {
+          window.removeEventListener('beforeunload', disconnect);
+        };
+      },[])
+
+
+
+    const disconnect=async()=>{
+        await deleteDoc(doc(db,"PendingList",classCode))
+        const classRoomRef= doc(db,"Classes",classCode)
+        await updateDoc(classRoomRef,{live:false})
+        try{
+            
+            localRef.current.srcObject.getTracks().forEach(track => track.stop());
+            localRef.current.srcObject=null
+            for(let i=0;i<remoteRef.length;i++){
+                remoteRef[i].current.srcObject.getTracks().forEach(track => track.stop());
+                remoteRef.current.srcObject=null
+            }
+            
+            for(let i=0;i<connections.length;i++){
+                connections[i].close()
+            }
+        }catch(err){
+            
+        }
+
+        navigate('/Teacher/'+classCode)
+      }
+      
 
   return (
     <Stack>
@@ -187,7 +270,7 @@ const GoLive = () => {
                             <NoteAltIcon />
                         </Fab>
                        
-                        <Fab color="secondary" aria-label="edit">
+                        <Fab color="secondary" aria-label="edit" onClick={disconnect}>
                             <CancelIcon />
                         </Fab>
                  </Stack>
@@ -217,21 +300,44 @@ const GoLive = () => {
         >
 
 
-           
-            <Card orientation="horizontal"  variant="outlined" sx={{gap: 2, '--Card-padding': (theme) => theme.spacing(2),}}>
-                <Box sx={{ whiteSpace: 'nowrap' }}>
-                    <video ref={remoteRef[0]} style={{width:'15vw',height:'100%'}} autoPlay playsInline/>
-                </Box>
-            </Card>
 
-            <Card orientation="horizontal"  variant="outlined" sx={{gap: 2, '--Card-padding': (theme) => theme.spacing(2),}}>
-                <Box sx={{ whiteSpace: 'nowrap' }}>
-                    <video ref={remoteRef[1]} style={{width:'15vw',height:'100%'}} autoPlay playsInline/>
-                </Box>
-            </Card>
+        
 
 
+                    <Card orientation="horizontal"  variant="outlined" sx={{display:liveStudents[0].joined?'block':'none',gap: 2, '--Card-padding': (theme) => theme.spacing(2),}}>
+                        <Box sx={{ whiteSpace: 'nowrap' }}>
+                            <video ref={remoteRef[0]} style={{width:'15vw',height:'100%'}} autoPlay playsInline/>
+                        </Box>
+                    </Card>
 
+                    
+                    <Card orientation="horizontal"  variant="outlined" sx={{display:liveStudents[1].joined?'block':'none',gap: 2, '--Card-padding': (theme) => theme.spacing(2),}}>
+                        <Box sx={{ whiteSpace: 'nowrap' }}>
+                            <video ref={remoteRef[1]} style={{width:'15vw',height:'100%'}} autoPlay playsInline/>
+                        </Box>
+                    </Card>
+                    
+                    
+                    <Card orientation="horizontal"  variant="outlined" sx={{display:liveStudents[2].joined?'block':'none',gap: 2, '--Card-padding': (theme) => theme.spacing(2),}}>
+                        <Box sx={{ whiteSpace: 'nowrap' }}>
+                            <video ref={remoteRef[2]} style={{width:'15vw',height:'100%'}} autoPlay playsInline/>
+                        </Box>
+                    </Card>
+                    
+                    
+                    <Card orientation="horizontal"  variant="outlined" sx={{display:liveStudents[3].joined?'block':'none',gap: 2, '--Card-padding': (theme) => theme.spacing(2),}}>
+                        <Box sx={{ whiteSpace: 'nowrap' }}>
+                            <video ref={remoteRef[3]} style={{width:'15vw',height:'100%'}} autoPlay playsInline/>
+                        </Box>
+                    </Card>
+                    
+                    
+                    <Card orientation="horizontal"  variant="outlined" sx={{display:remoteRef[4].joined?'block':'none',gap: 2, '--Card-padding': (theme) => theme.spacing(2),}}>
+                        <Box sx={{ whiteSpace: 'nowrap' }}>
+                            <video ref={remoteRef[4]} style={{width:'15vw',height:'100%',display:liveStudents[4].joined?'block':'none'}} autoPlay playsInline/>
+                        </Box>
+                    </Card>
+                    
 
 
                 </Box>
