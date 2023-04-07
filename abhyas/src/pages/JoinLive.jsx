@@ -10,7 +10,7 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import { Stack,Fab,Grid } from '@mui/material';
 import ChatRoom from '../components/ChatRoom';
-
+import { useNavigate } from 'react-router-dom';
 const servers = {
   iceServers: [
       {
@@ -27,16 +27,19 @@ const servers = {
 
 
 const JoinLive = () => {
+  let navigate=useNavigate()
   const user=useSelector(state=>state.user.value)
   const [videoActive, setVideoActive] = React.useState(false);
   const {classCode}=useParams();
   const localRef =React.useRef();
   const remoteRef = React.useRef();
-
+  let pc
   React.useEffect(() => {
+    pc = new RTCPeerConnection(servers);
     const getRoomId = async () => {
       const docRef= doc(db,"PendingList",classCode,'data',user.email)
       const docSnap = await getDoc(docRef);
+      await setDoc(docRef,{joined:true},{merge:true})
       if (docSnap.exists()) {
         const data=docSnap.data()
         console.log(data)
@@ -49,6 +52,18 @@ const JoinLive = () => {
     getRoomId()
   },[])
 
+  React.useEffect(()=>{
+    window.addEventListener('beforeunload', disconnect);
+    return () => {
+      window.removeEventListener('beforeunload', disconnect);
+    };
+  },[])
+
+
+
+
+
+
   const toggleVideo=()=>{
     localRef.current.srcObject.getVideoTracks()[0].enabled=!localRef.current.srcObject.getVideoTracks()[0].enabled
     setVideoActive(prevVideoActive=>!prevVideoActive)
@@ -56,9 +71,21 @@ const JoinLive = () => {
 }
 
 
+const disconnect=async()=>{
+  localRef.current.srcObject.getTracks().forEach(track => track.stop());
+  remoteRef.current.srcObject.getTracks().forEach(track => track.stop());
+  localRef.current.srcObject=null
+  remoteRef.current.srcObject=null
+  const docRef= doc(db,"PendingList",classCode,'data',user.email)
+  await updateDoc(docRef,{joined:false,codeGenerationNeeded:true})
+  pc.close()
+  navigate('/Student/'+classCode)
+}
+
+
   const setupSources = async (callId) => {
     
-    const pc = new RTCPeerConnection(servers);
+
     const localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
@@ -121,6 +148,8 @@ const JoinLive = () => {
 };
 
 
+
+
   return (
     <Grid container>
       <Grid item xs={9}>
@@ -135,7 +164,7 @@ const JoinLive = () => {
                   <NoteAltIcon />
               </Fab>
               
-              <Fab color="secondary" aria-label="edit">
+              <Fab color="secondary" aria-label="edit" onClick={disconnect}>
                   <CancelIcon />
               </Fab>
             </Stack>

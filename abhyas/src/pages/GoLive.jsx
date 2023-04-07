@@ -15,6 +15,8 @@ import MicNoneIcon from '@mui/icons-material/MicNone';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import ScreenShareIcon from '@mui/icons-material/ScreenShare';
+
 
   const servers = {
     iceServers: [
@@ -36,7 +38,7 @@ const GoLive = () => {
     const [webcamActive, setWebcamActive] = React.useState(false);
     const [micActive, setMicActive] = React.useState(false);
     const [videoActive, setVideoActive] = React.useState(false);
-
+    let connections=[]
 
     let localStream
     const localRef =React.useRef();
@@ -51,7 +53,6 @@ const GoLive = () => {
             const classRoom=await getDoc(doc(db,"Classes",classCode))
             const data=classRoom.data()
             for(let i=0;i<data.students.length;i++){
-          
                 createSources(data.students[i],i)
             
             }
@@ -59,29 +60,51 @@ const GoLive = () => {
         getRoomId()
 
     }, [])
+
+
+
+    React.useEffect(() => {
+        const onSnaps = async () => {
+        const classRoom=await getDoc(doc(db,"Classes",classCode))
+        const data=classRoom.data()
+        for(let i=0;i<data.students.length;i++){
+            onSnapshot(doc(db,"PendingList",classCode,'data',data.students[i]), (doc) => {
+                if(doc.data().codeGenerationNeeded===true){
+                    createSources(data.students[i],i)
+                }
+            })
+
+            createSources(data.students[i],i)
+        
+        }
+    }
+    onSnaps()
+    },[]);
+    
+
+
+
     
     const toggleMic=()=>{
         localRef.current.srcObject.getAudioTracks()[0].enabled=!localRef.current.srcObject.getAudioTracks()[0].enabled
         setMicActive(prevMicActive=>!prevMicActive)
-        
-
     }
     
     const toggleVideo=()=>{
         localRef.current.srcObject.getVideoTracks()[0].enabled=!localRef.current.srcObject.getVideoTracks()[0].enabled
-        setVideoActive(prevVideoActive=>!prevVideoActive)
-        
-
-   
+        setVideoActive(prevVideoActive=>!prevVideoActive) 
     }
 
-
-
+   
+    const toggleScreenShare = async () => {
+       
+      };
+      
 
     const createSources = async (email,index) => {
         const pc = new RTCPeerConnection(servers);
         
-
+        connections.push(pc)
         const remoteStream = new MediaStream();
 
         localStream.getTracks().forEach((track) => {
@@ -103,7 +126,7 @@ const GoLive = () => {
             const offerCandidates = collection(callDoc,"offerCandidates");
             const answerCandidates = collection(callDoc,"answerCandidates");
           
-            const pendingListCreator=await setDoc(doc(db,"PendingList",classCode,'data',email),{email,codeId:callDoc.id},{merge:true})
+            const pendingListCreator=await setDoc(doc(db,"PendingList",classCode,'data',email),{email,codeId:callDoc.id,joined:false,codeGenerationNeeded:false},{merge:true})
 
             pc.onicecandidate = (event) => {
                 event.candidate &&
@@ -156,6 +179,9 @@ const GoLive = () => {
                         </Fab>
                         <Fab color="secondary" aria-label="edit" onClick={toggleVideo}>
                             {videoActive?<VideocamIcon />:<VideocamOffIcon />}
+                        </Fab>
+                        <Fab color="secondary" aria-label="edit" onClick={toggleScreenShare}>
+                            <ScreenShareIcon />
                         </Fab>
                         <Fab color="secondary" aria-label="edit">
                             <NoteAltIcon />
