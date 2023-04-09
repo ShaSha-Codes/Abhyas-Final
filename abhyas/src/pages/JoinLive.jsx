@@ -11,6 +11,16 @@ import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import { Stack,Fab,Grid } from '@mui/material';
 import ChatRoom from '../components/ChatRoom';
 import { useNavigate } from 'react-router-dom';
+import Dialog from '@mui/material/Dialog';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
+import Slide from '@mui/material/Slide';
+import Button from '@mui/material/Button';
+import StudentWhiteboard from '../components/StudentWhiteboard';
+
 const servers = {
   iceServers: [
       {
@@ -23,6 +33,10 @@ const servers = {
   iceCandidatePoolSize: 10,
 };
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 
 
@@ -33,16 +47,29 @@ const JoinLive = () => {
   const {classCode}=useParams();
   const localRef =React.useRef();
   const remoteRef = React.useRef();
+  const [open, setOpen] = React.useState(false);
+
   let pc
+
+
+  const handleClickOpen = () => {
+    setOpen(true);
+    
+};
+
+const handleClose = () => {
+    setOpen(false);
+  
+   
+};
+
+ 
 
   React.useEffect(()=>{
     const checker=async()=>{
       let docRef=doc(db,"Classes",classCode)
-     
       onSnapshot(docRef,(doc)=>{
         if(doc.data().live===false){
-     
-          
           navigate('/Student/'+classCode,{state:{error:"Live session ended"}})
         }
       })
@@ -53,8 +80,6 @@ const JoinLive = () => {
 
 
   React.useEffect(() => {
-   
-    
     pc = new RTCPeerConnection(servers);
     const getRoomId = async () => {
       let docRef2=doc(db,"Classes",classCode)
@@ -77,6 +102,8 @@ const JoinLive = () => {
     }
     getRoomId()
   },[])
+
+
 
   React.useEffect(()=>{
     window.addEventListener('beforeunload', disconnect);
@@ -184,7 +211,7 @@ const disconnect=async()=>{
               <Fab color="secondary" aria-label="edit" onClick={toggleVideo}>
                     {videoActive?<VideocamIcon />:<VideocamOffIcon />}
               </Fab>
-              <Fab color="secondary" aria-label="edit">
+              <Fab color="secondary" aria-label="edit" onClick={handleClickOpen}>
                   <NoteAltIcon />
               </Fab>
               
@@ -203,8 +230,41 @@ const disconnect=async()=>{
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'column'}} item xs={3}>
-          <ChatRoom />
+          <ChatRoom width={'20vw'}/>
       </Grid>
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar sx={{ position: 'relative' }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              Whiteboard
+            </Typography>
+            <Button autoFocus color="inherit" onClick={handleClose}>
+              save
+            </Button>
+          </Toolbar>
+
+        </AppBar>
+                   
+
+      <StudentWhiteboard />
+   
+
+   
+        
+      </Dialog>
     </Grid>
   )
 }

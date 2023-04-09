@@ -29,7 +29,7 @@ const fileType=['pdf','doc','docx','ppt','pptx','xls','xlsx','txt','csv','zip','
 'wav','wma','aac','flac','m4a','m4b','m4p','m4r','m4v','mka','png','jpeg','jpg','gif','bmp','svg','webp','psd','ai','eps','indd','raw','cr2','nef','orf','sr2','tif','tiff','dng','jxr','hdp','wdp','jpm','jpx','heic','ktx','ktx2','jng','svg','ico','icns','bpg','jp2','j2k','jpf','jpx','jpm','mj2','mjp2','jxr','hdp','wdp','avif','heif','heic','heics','heifs','avifs','pdf','doc','docx','ppt','pptx','xls','xlsx','txt','csv','zip','rar','7z','tar','gz','tar.gz','tar.bz2','tar.xz','tar.lz','tar.lzma','tar.lzo','tar.sz','tar.Z','tar.zst','tar.lz4',]
 
 
-const ChatRoom = () => {
+const ChatRoom = (props) => {
     let user=useSelector(state=>state.user.value)
     const {classCode} = useParams()
     console.log(classCode)
@@ -145,7 +145,7 @@ const scrollableDivRef = React.useRef(null);
 
   return (
     <div>
-        <Stack ref={scrollableDivRef} sx={{overflow: 'auto',height:'62vh',width:'90vw'}}>
+        <Stack ref={scrollableDivRef} sx={{display: 'flex',overflow: 'auto',height:'62vh',width:props?.width?props.width:'90vw'}}>
            {messageData}
           
         </Stack>
