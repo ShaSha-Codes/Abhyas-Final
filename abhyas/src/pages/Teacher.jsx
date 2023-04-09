@@ -149,6 +149,7 @@ const Teacher = () => {
         lecturesUpdater()
         // assignmentsUpdater()
         // quizzesUpdater()
+        
         if(speedDialValue===5){
           navigate("/Teacher/Live/Create/" + classCode)
         }

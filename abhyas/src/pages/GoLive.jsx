@@ -17,6 +17,17 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
+import Slide from '@mui/material/Slide';
+import Whiteboard from '../components/Whiteboard';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 
   const servers = {
     iceServers: [
@@ -30,6 +41,11 @@ import { useNavigate } from 'react-router-dom';
     iceCandidatePoolSize: 10,
 };
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
+
 
 
 
@@ -39,6 +55,49 @@ const GoLive = () => {
     const [webcamActive, setWebcamActive] = React.useState(false);
     const [micActive, setMicActive] = React.useState(false);
     const [videoActive, setVideoActive] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const [whiteboardCounter,setWhiteboardCounter]=React.useState(0)
+    let counter=0
+    const [whiteboardArray,setWhiteboardArray]=React.useState([<Whiteboard counter={0}/>])
+
+
+    const handleLeft=()=>{
+        if(whiteboardCounter>0){
+            setWhiteboardCounter(prevWhiteboardCounter=>prevWhiteboardCounter-1)
+          
+        }
+    
+    }
+
+    const handleRight=()=>{
+        if(whiteboardCounter<whiteboardArray.length-1){
+            setWhiteboardCounter(prevWhiteboardCounter=>prevWhiteboardCounter+1)
+        
+        }else{
+            setWhiteboardArray(prevWhiteboardArray=>{
+                const newWhiteboardArray=[...prevWhiteboardArray]
+                newWhiteboardArray.push(<Whiteboard counter={whiteboardCounter+1}/>)
+                return newWhiteboardArray
+            })
+            setWhiteboardCounter(prevWhiteboardCounter=>prevWhiteboardCounter+1)
+            
+        }
+        console.log(whiteboardArray)
+    }
+
+
+    const handleClickOpen = () => {
+        setOpen(true);
+        
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setWhiteboardCounter(0)
+       
+    };
+
+
     const [liveStudents,setLiveStudents]=React.useState([
         {email:'',joined:false},
         {email:'',joined:false},
@@ -75,9 +134,10 @@ const GoLive = () => {
             const data=classRoom.data()
             for(let i=0;i<data.students.length;i++){
                 createSources(data.students[i],i)
-            
             }
         }
+
+        
         getRoomId()
 
     }, [])
@@ -139,7 +199,7 @@ const GoLive = () => {
 
    
     const toggleScreenShare = async () => {
-       
+        console.log(whiteboardRef)
       };
       
 
@@ -266,7 +326,7 @@ const GoLive = () => {
                         <Fab color="secondary" aria-label="edit" onClick={toggleScreenShare}>
                             <ScreenShareIcon />
                         </Fab>
-                        <Fab color="secondary" aria-label="edit">
+                        <Fab color="secondary" aria-label="edit" onClick={handleClickOpen}>
                             <NoteAltIcon />
                         </Fab>
                        
@@ -279,7 +339,7 @@ const GoLive = () => {
             </Grid>
             <Grid item xs={3}>
                 <Paper elevation={24} sx={{height:'77vh'}}>
-                    <ChatRoom style={{height:"100vh"}} />
+                    <ChatRoom width={'20vw'} style={{height:"100vh"}} />
                 </Paper>
             </Grid>
         </Grid>
@@ -337,16 +397,72 @@ const GoLive = () => {
                             <video ref={remoteRef[4]} style={{width:'15vw',height:'100%',display:liveStudents[4].joined?'block':'none'}} autoPlay playsInline/>
                         </Box>
                     </Card>
-                    
-
+                  
 
                 </Box>
 
 
+            
+    <div>
+      
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar sx={{ position: 'relative' }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              Whiteboard
+            </Typography>
+            <Button autoFocus color="inherit" onClick={handleClose}>
+              save
+            </Button>
+          </Toolbar>
+
+        </AppBar>
+                   
 
             
+        <IconButton sx={{position:'fixed',top:'50%',left:'10px',zIndex:9000}} aria-label="left" color="secondary" size="large" onClick={handleLeft}>
+            <ArrowCircleLeftOutlinedIcon  fontSize="inherit"/>
+        </IconButton>
 
 
+        <IconButton sx={{position:'fixed',top:'50%',right:'10px',zIndex:9000}} aria-label="right" color="secondary" size="large" onClick={handleRight}> 
+            <ArrowCircleRightOutlinedIcon fontSize="inherit"/>
+        </IconButton>
+     
+            {whiteboardArray.map((item,index)=>{
+                return(
+                    <div style={{display:index===whiteboardCounter?'visibility':'hidden',zIndex:index===whiteboardCounter?100:-1,position:'fixed'}}>
+                        {item}
+                    </div>
+                )
+                }
+            )}
+
+  
+          
+            {whiteboardCounter}
+                
+
+        
+
+   
+        
+      </Dialog>
+    </div>
+ 
     
 
     </Stack>
