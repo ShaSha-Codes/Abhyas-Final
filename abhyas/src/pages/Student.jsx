@@ -14,10 +14,6 @@ import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { useSelector,useDispatch} from 'react-redux';
 import {db} from '../firebase'
 import {collection,query,where,getDocs} from 'firebase/firestore'
-import QuizForm from '../components/QuizForm';
-import AssignmentForm from '../components/AssignmentForm';
-import LectureForm from '../components/LectureForm';
-import NoteForm from '../components/NoteForm';
 import NoteCard from '../components/NoteCard';
 import LectureCard from '../components/LectureCard';
 import { Grid } from '@mui/material';

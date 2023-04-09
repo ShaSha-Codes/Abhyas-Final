@@ -14,6 +14,7 @@ import PageNotFound from './pages/PageNotFound'
 import Lecture from './pages/Lecture'
 import GoLive from './pages/GoLive'
 import JoinLive from './pages/JoinLive'
+import VerifyCertificate from './pages/VerifyCertificate'
 
 import { Routes,Route } from 'react-router-dom'
 
@@ -34,6 +35,7 @@ const App = () => {
         <Route path='/Lecture/:lecCode'element={<Lecture/>} />
         <Route path='/Teacher/Live/Create/:classCode' element={<GoLive/>} />
         <Route path='/Student/Live/Join/:classCode' element={<JoinLive/>} />
+        <Route path='/VerifyCertificate/:certificateCredential' element={<VerifyCertificate/>} />
         <Route path='/*' element={<PageNotFound/>} />
     </Routes>
   )

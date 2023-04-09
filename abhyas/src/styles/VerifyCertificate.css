@@ -1,0 +1,66 @@
+.certificateContainer {
+    border: 12px solid #3c7979;
+    border-style: ridge;
+    width: 750px;
+    height: 563px;
+    display: table-cell;
+    vertical-align: middle;
+    border-radius: 5px;
+    
+}
+.logo {
+    color: #3c7979;
+}
+.logoimg{
+    height :80px;
+    width: 80px;
+}
+.signature {
+    color: #3c7979;
+}
+.signatureimg{
+    height :80px;
+    width: 80px;
+}
+.heading{
+    color: #3c7979;
+    font-size: 48px;
+    margin: 20px;
+}
+.presented {
+    margin: 20px;
+}
+.person {
+    border-bottom: 2px solid black;
+    font-size: 32px;
+    font-style: italic;
+    margin: 20px auto;
+    width: 400px;
+}
+.reason {
+    margin: 20px;
+}
+.date {
+font-size: 10px;
+position:relative;
+ 
+}
+.cred {
+font-size: 20px;
+position:fixed;
+bottom: 0; 
+left: 0 ;   
+}
+
+.certificate-body {
+    color: black;
+    display: table;
+    font-family: Georgia, serif;
+    font-size: 24px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4%;
+   
+    
+}

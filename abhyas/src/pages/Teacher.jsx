@@ -28,6 +28,7 @@ import { Grid } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useLogout from '../hooks/useLogout';
 import ChatRoom from '../components/ChatRoom';
+import CertificateMaker from '../components/CertificateMaker';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -73,30 +74,6 @@ const teacherActions = [
     { icon: <QuizIcon />, name: 'Upload Quiz' },
     { icon: <LiveTvIcon />, name: 'Go Live' }
   ];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const Teacher = () => {
     let dispatch = useDispatch()
@@ -200,6 +177,7 @@ const Teacher = () => {
                     <Tab label="Assignments" {...a11yProps(3)} />
                     <Tab label="Quizzes" {...a11yProps(4)} />
                     <Tab label="Chat" {...a11yProps(5)} />
+                    <Tab label="Certificates" {...a11yProps(6)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -304,6 +282,9 @@ const Teacher = () => {
             </TabPanel>
             <TabPanel value={value} index={5}>
                 <ChatRoom/>
+            </TabPanel>
+            <TabPanel value={value} index={6}>
+                <CertificateMaker/>
             </TabPanel>
             <AssignmentForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
             <QuizForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>

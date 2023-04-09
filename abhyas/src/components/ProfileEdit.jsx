@@ -92,14 +92,6 @@ const ProfileEdit = (props) => {
       setSubmitted(true)
        });
     });
-
-
-
-
-
-
-
-
   }
 
 
