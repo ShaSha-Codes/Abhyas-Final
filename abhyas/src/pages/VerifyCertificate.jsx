@@ -38,6 +38,10 @@ export default function VerifyCertificate() {
         format: [900, 660],
       };
 
+    const filename = (props) => {
+        return ('Abhyas-certificate-'+props+'.pdf')
+    }
+
 
     React.useEffect(() => {
         certificateUpdater()
@@ -50,7 +54,7 @@ export default function VerifyCertificate() {
     <div>
         {loaded &&
         <div>
-          <Pdf targetRef={ref} options={options} scale={2} filename="Abhyas-certificate.pdf">
+          <Pdf targetRef={ref} options={options} scale={2} filename={filename(certificateData[0].certificateCredential)}>
         {({ toPdf }) => <div style={{display:"flex",justifyContent:"center"}}><Button
               variant="contained"
               sx={{ mt: 1, backgroundColor: '#3c7979'}} onClick={toPdf}>Download Certificate</Button></div>}
