@@ -27,7 +27,7 @@ import Select from '@mui/material/Select';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { db,storage } from '../firebase';
-import { doc,updateDoc } from "firebase/firestore";
+import { doc,addDoc } from "firebase/firestore";
 import { ref,uploadBytesResumable, uploadBytes,getDownloadURL,} from "firebase/storage";
 import { nanoid } from 'nanoid';
 import {collection,query,where,getDoc,getDocs} from 'firebase/firestore'
@@ -97,6 +97,11 @@ export default function CertificateMaker() {
             }
             if(!signatureData.signatureUrl){
                 setAlertData({severity:'error',message:'Upload Signature'})
+                toggler(true)
+                return
+            }
+            if(document.getElementById('signer').value===""){
+                setAlertData({severity:'error',message:'Enter Signer Name'})
                 toggler(true)
                 return
             }
@@ -196,16 +201,21 @@ export default function CertificateMaker() {
                             studentName=tempData.fname+" "+tempData.lname
                         });
                         console.log(studentName)
-                        const dataRef = doc(db, "Certificates", studentSelected[key]);
-                        await updateDoc(dataRef, {
+                        const credential = nanoid(9)
+                        const dataRef = collection(db, "Certificates");
+                        await addDoc(dataRef, {
+                            certificateCredential: credential,
                             organisation: document.getElementById('organisation name').value,
                             title: document.getElementById('title').value,
                             logo: logoData.photoUrl,
                             signature: signatureData.signatureUrl,
+                            signer: document.getElementById('signer').value, 
                             email: studentSelected[key],
                             date: Date.now(),
                             name: studentName,
                         });
+
+                        
                     }
                   
                   
@@ -226,7 +236,7 @@ export default function CertificateMaker() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 0,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -326,12 +336,21 @@ export default function CertificateMaker() {
                 variant="rounded"
               />
         </label>
-
         < input onChange={handleSignatureChange} style={{display: 'none'}} id="sign" type="file"/>
          </div>
 
 
      </div>
+     <TextField
+         margin="normal"
+         required
+         fullWidth
+          name="signer"
+          label="Signer's Name"
+          type="signer"
+          id="signer"
+          autoComplete="current-signer"
+        />
      
         
     

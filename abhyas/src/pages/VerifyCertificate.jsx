@@ -3,6 +3,12 @@ import { useParams } from 'react-router-dom'
 import {db} from '../firebase'
 import {collection,query,where,getDocs} from 'firebase/firestore'
 import '../styles/VerifyCertificate.css'
+import Pdf from "react-to-pdf";
+import Button from '@mui/material/Button';
+import QRCode from "react-qr-code";
+
+
+const ref = React.createRef();
 
 export default function VerifyCertificate() {
     const {certificateCredential}=useParams()
@@ -19,12 +25,20 @@ export default function VerifyCertificate() {
         const querySnapshot = await getDocs(q);
         let tempData=[]
         querySnapshot.forEach((doc) => {
-          tempData.push({certificateCredential:doc.data().certificateCredential,title:doc.data().title,logo:doc.data().logo, signature:doc.data().signature, name:doc.data().name, email:doc.data().email, organisation:doc.data().organisation, date:doc.data().date})
+          tempData.push({certificateCredential:doc.data().certificateCredential,title:doc.data().title,logo:doc.data().logo, signature:doc.data().signature, name:doc.data().name, email:doc.data().email, organisation:doc.data().organisation, date:doc.data().date,signer:doc.data().signer})
         })
         console.log(tempData)
         setCertificateData(tempData)
         setLoaded(true)
     }
+
+    const options = {
+        orientation: 'landscape',
+        unit: 'px',
+        format: [900, 660],
+      };
+
+
     React.useEffect(() => {
         certificateUpdater()
     },[])
@@ -35,7 +49,13 @@ export default function VerifyCertificate() {
   return (
     <div>
         {loaded &&
-        <div className="certificate-body">
+        <div>
+          <Pdf targetRef={ref} options={options} scale={2} filename="Abhyas-certificate.pdf">
+        {({ toPdf }) => <div style={{display:"flex",justifyContent:"center"}}><Button
+              variant="contained"
+              sx={{ mt: 1, backgroundColor: '#3c7979'}} onClick={toPdf}>Download Certificate</Button></div>}
+      </Pdf>
+        <div ref={ref} className="certificate-body">
         <div className="certificateContainer shadow-lg ">
             <div className="logo">
               <img
@@ -63,6 +83,7 @@ export default function VerifyCertificate() {
                 className="signatureimg"
                 src={certificateData[0].signature}
                 />
+                <p className="signer" style={{marginTop:-1}}>{certificateData[0].signer}</p>
             </div>
             <div className="date">
               Date of completion:
@@ -72,11 +93,18 @@ export default function VerifyCertificate() {
               Email verification:
               {certificateData[0].email}
             </div>
-            <div className="cred">
+            <div className="qr">
+              <p className="qr-text">verify certificate at:</p>
+              <QRCode 
+                style={{ height: "auto", maxWidth: "80px", width: "100%" }}
+                viewBox={`0 0 256 256`} value={window.location.href} />
+              </div>
+          </div>
+        </div>
+        <div className="cred">
               Credentials:
               {certificateData[0].certificateCredential}
             </div>
-          </div>
         </div>}
         
   </div>

@@ -6,6 +6,7 @@
     display: table-cell;
     vertical-align: middle;
     border-radius: 5px;
+    position: relative;
     
 }
 .logo {
@@ -13,14 +14,12 @@
 }
 .logoimg{
     height :80px;
-    width: 80px;
 }
 .signature {
     color: #3c7979;
 }
 .signatureimg{
     height :80px;
-    width: 80px;
 }
 .heading{
     color: #3c7979;
@@ -55,12 +54,22 @@ left: 0 ;
 .certificate-body {
     color: black;
     display: table;
+    width:800px;
     font-family: Georgia, serif;
     font-size: 24px;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
     margin-top: 4%;
-   
+}
+.qr{
+    position: relative;
+    left: 300px;
+    bottom: 130px;
+    margin-bottom: -120px;
     
+}
+.qr-text{
+    font-size: 12px;
+    font-style: italic;
 }

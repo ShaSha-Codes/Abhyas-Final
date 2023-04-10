@@ -26,9 +26,11 @@
     "react-drag-drop-files": "^2.3.9",
     "react-material-ui-carousel": "^3.4.2",
     "react-pdf": "^6.2.2",
+    "react-qr-code": "^2.0.11",
     "react-redux": "^8.0.5",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.9.0",
+    "react-to-pdf": "^0.0.14",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "webrtc": "^1.14.1"
