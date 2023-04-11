@@ -10,6 +10,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -24,6 +25,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import Select from '@mui/material/Select';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { db,storage } from '../firebase';
@@ -64,8 +67,12 @@ export default function CertificateMaker() {
 
     const [studentsData, setStudentsData] = React.useState([]);
     const [studentSelected, setStudentSelected] = React.useState([]);
-    const [submitted,setSubmitted]=React.useState(false)
-    const [submitted1,setSubmitted1]=React.useState(false)
+    const [submitted,setSubmitted]=React.useState(false);
+    const [submitted1,setSubmitted1]=React.useState(false);
+    const [show,setShow] = React.useState(false);
+    const [buttonContent,setButtonContent]=React.useState("");
+    const [existingCertificates,setExistingCertificates]=React.useState([]);
+    const [trigger,setTrigger]=React.useState(false);
 
     const checker=useLogout()
     React.useEffect(() => {
@@ -162,19 +169,36 @@ export default function CertificateMaker() {
                 })
                 console.log("signature changed")
             }
+            
 
-            const studentsUpdater = async () => {
+            const certificatesUpdater = async () => {
+
+              const q1 = query(collection(db, "Certificates"), where("classCode", "==", classCode));
+              const querySnapshot1 = await getDocs(q1);
+              let certificates = []
+              querySnapshot1.forEach((doc) => {
+                  certificates.push(doc.data())
+              });
+              setExistingCertificates(certificates)
+            }
+
+            const studentUpdater = async () => {
                 const q = query(collection(db, "UserInfo"), where("student", "array-contains", classCode));
                 const querySnapshot = await getDocs(q);
                 let students = []
                 querySnapshot.forEach((doc) => {    
                     
+                  for(let i=0;i<existingCertificates.length;i++){
+                    if(existingCertificates[i].email!==doc.data().email){
                     let tempData=doc.data()
-                    
                     students.push(tempData.fname+" "+tempData.lname+" ("+tempData.email+")")
+                    }
+                  }
+                    
                 });
                 setStudentsData(students)
             }
+          
 
             const getStudentEmail = (props)=>{
                 var str = props,
@@ -183,11 +207,24 @@ export default function CertificateMaker() {
                 return str
             }
 
+            const setShowValue=()=>{
+              setShow(!show)
+              if(show){
+                setButtonContent("Show")
+              }else{
+                setButtonContent("Hide")
+              }
+            }
+
 
 
             React.useEffect(() => {
-                studentsUpdater()
+                certificatesUpdater()
             }, [])
+
+            React.useEffect(() => {
+                studentUpdater()
+            }, [existingCertificates])
 
             React.useEffect(() => {
                 if (submitted && submitted1){
@@ -213,6 +250,7 @@ export default function CertificateMaker() {
                             email: studentSelected[key],
                             date: Date.now(),
                             name: studentName,
+                            classCode: classCode
                         });
 
                         
@@ -363,6 +401,33 @@ export default function CertificateMaker() {
               Make Certificates
             </Button>
           </Box>
+          <Grid xs={12} sx={{width:"80vw"}} >
+          <Paper sx={{marginTop:1,p:1.5,paddingLeft:10,minHeight:'10px',backgroundColor:'#f2f2f2',borderRadius:2}}>
+            <div style={{display:"flex", style:"row" , justifyContent:"space-between" }}>
+            <Typography variant="h6" sx={{color:'black'}}>View Assigned Certificates</Typography>
+            <Typography sx={{color:'gray', fontSize:'15px', marginTop:'auto'}}><button onClick={setShowValue} style={{display:'flex', alignItems:'center',borderRadius:"10px",border:'solid 0.5px gray'}}>{buttonContent}{!show&& <ArrowDropDownIcon/>}{show&&<ArrowDropUpIcon/>}</button></Typography>
+            </div>
+             {show && 
+             <div style={{marginTop:'10px'}}>
+              <hr style={{borderTop:'1px dotted gray', marginBottom:10}}/>
+             <Typography variant="body1" sx={{color:'black',marginTop:-1}}>
+              {existingCertificates.map((certificate)=>{
+                return(
+                  
+                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+                    <Typography variant="h6" sx={{color:'black'}}>{certificate.name +" ("+certificate.email+") "}</Typography>
+                    <Button  onClick={()=>{setShowValue(); navigate('/VerifyCertificate/'+certificate.certificateCredential)}} sx={{color:'#3c7979',marginLeft:5,height:"10px"}}>View</Button>
+                    </div>
+                
+                )
+              })
+              }
+             </Typography>
+             </div>} 
+            
+     
+          </Paper>
+          </Grid>
         </Box>
         
       </Container>
