@@ -16,9 +16,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import Map,{ Marker,
   NavigationControl,
-  Popup,
   FullscreenControl,
-  GeolocateControl,} from 'react-map-gl';
+  GeolocateControl,
+  Layer, Source} from 'react-map-gl';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -30,7 +30,12 @@ import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import HailIcon from '@mui/icons-material/Hail';
 import JobCard from '../components/JobCard';
-
+import { nanoid } from 'nanoid';
+import  Carousel  from 'react-material-ui-carousel';
+import Slider from '@mui/material/Slider';
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
+import RunCircleIcon from '@mui/icons-material/RunCircle';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -45,6 +50,36 @@ const Transition3 = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="top" ref={ref} {...props} />;
 });
 
+const distanceArray = [
+  {
+    value: 5,
+    label: '5Km',
+  },
+  {
+    value: 20,
+    label: '20Km',
+  },
+  ,
+  {
+    value: 40,
+    label: '40Km',
+  },
+  ,
+  {
+    value: 60,
+    label: '60Km',
+  },
+  ,
+  {
+    value: 80,
+    label: '80Km',
+  },
+  {
+    value: 100,
+    label: '100Km',
+  },
+ 
+];
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -64,8 +99,6 @@ const Item = styled(Paper)(({ theme }) => ({
 const TutorFinder = () => {
   const [lng1,setLng1]=React.useState(72.842949);
   const [lat1,setLat1]=React.useState(19.133890);
-  const [lng2,setLng2]=React.useState(72.842949);
-  const [lat2,setLat2]=React.useState(19.133890);
   const [mode, setMode] = React.useState('online');
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
@@ -74,10 +107,13 @@ const TutorFinder = () => {
   const [description,setDescription]=React.useState('');
   const [open4, setopen4] = React.useState(false);
   const [userCardData, setUserCardData] = React.useState([]);
+  const [distance,setDistance]=React.useState(5)
 
   let user = useSelector(state => state.user.value)
 
 
+
+ 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -94,6 +130,9 @@ const TutorFinder = () => {
   }
 
 
+ 
+
+
   const handleMode = (event, newMode) => {
     if (newMode !== null) {
       setMode(newMode);
@@ -105,7 +144,9 @@ const TutorFinder = () => {
       setopen4(true)
       return
     }else{
-      const docRef = await addDoc(collection(db, "Tutors"), {
+      let tutorCode = nanoid(10)
+      const docRef = await setDoc(doc(db, "Tutors",tutorCode), {
+        tutorCode:tutorCode,
         email:user.email,
         name:user.fname + " " + user.lname,
         photoUrl:user.photoUrl,
@@ -159,7 +200,7 @@ const TutorFinder = () => {
       const querySnapshot = await getDocs(query(collection(db, "Tutors"),where("email","==",user.email)));
       let tempData = []
       querySnapshot.forEach((doc) => {
-          tempData.push(<JobCard {...doc.data()} />)
+          tempData.push(<JobCard {...doc.data()} delete={true} />)
       });
       setUserCardData(tempData)
     }
@@ -395,9 +436,76 @@ const TutorFinder = () => {
            
           </Toolbar>
         </AppBar>
-    
+          
+          <Carousel swipe={false} autoPlay={false}>
+            <Map
+            
+              initialViewState={{
+                longitude: 72.842949,
+                latitude: 19.133890,
+                zoom: 2
+              }}
+              mapboxAccessToken='pk.eyJ1IjoiYW1hZGV1czA2NDAiLCJhIjoiY2xnYzA2NmJ2MWVrajNqbzZ5dDk5c3B1MiJ9.6Z4SZbQ_jRsoXM-hFKU3uQ'
+              style={{width:'100%',height:'95vh'}}
+              mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
+              projection={'globe'}
+              
+            >
+                    <Marker longitude={lng1} latitude={lat1} offsetLeft={-20} offsetTop={-10} draggable onDrag={dragMarker1}/>
+                 
+            
+               
+              </Map>
+              <Paper sx={{display:'flex',height:'90vh',width:'100vw',justifyContent:'center',alignItems:'center'}}>
+                <Stack  sx={{width:'40%'}}>
+                    <Typography variant='h5'>
+                      <b>Distance:</b>
+                    </Typography>
+                    <Slider defaultValue={5} marks={distanceArray} value={distance} onChange={(event)=>setDistance(event.target.value)} aria-label="Default" min={5} max={100} valueLabelDisplay="auto" />
+                </Stack>
+              </Paper>
+              <Paper sx={{display:'flex',height:'90vh',width:'100vw',justifyContent:'center',alignItems:'center'}}>
+                <Stack  sx={{justifyContent:'center',alignItems:'center'}}>
+                    <Typography variant='h4'>
+                      <b>Mode:</b>
+                    </Typography>
+                    <ToggleButtonGroup
+                        value={mode}
+                        exclusive
+                        onChange={handleMode}
+                        aria-label="Type of Tutor"
+                      >
+                        
+
+
+
+                        <ToggleButton sx={{fontSize:'1.3em'}} value="online" aria-label="left aligned">
+                        <EmojiPeopleIcon sx={{ fontSize: 40 }} />
+                          Online
+                        </ToggleButton>
+                        <ToggleButton sx={{fontSize:'1.3em'}} value="offline" aria-label="centered">
+                        <RunCircleIcon sx={{ fontSize: 40 }} />
+                          Offline
+                        </ToggleButton>
+                        <ToggleButton  sx={{fontSize:'1.3em'}} value="hybrid" aria-label="right aligned">
+                        <PeopleAltIcon sx={{ fontSize: 40 }} />
+                          Hybrid
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+
+                      <Button sx={{fontSize:'1.1em',marginTop:'20px',width:'60%'}} variant="contained">Submit</Button>
+
+                  
+                    
+                </Stack>
+              </Paper>
+
+
+          </Carousel> 
+
          
       </Dialog>
+
 
     </SideBar>
   )

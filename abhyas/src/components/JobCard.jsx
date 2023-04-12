@@ -14,37 +14,39 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from '../firebase';
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+
 
 export default function JobCard(props) {
-  const [expanded, setExpanded] = React.useState(false);
-    const {title,description,mode,photoUrl}=props
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+   
+    const {title,description,mode,photoUrl,tutorCode}=props
+    const [display, setDisplay] = React.useState(true);
+
+  const handleDelete=async(tutorCode)=>{
+    await deleteDoc(doc(db, "Tutors", tutorCode));
+    setDisplay("none")
+   
+  }
+
+
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ display:display,maxWidth: 345 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} src={photoUrl} aria-label="Profile Pic" />
            
         }
         action={
+          props.delete &&
           <IconButton aria-label="settings">
-            <MoreVertIcon />
+            <DeleteIcon onClick={()=>{handleDelete(tutorCode)}} />
           </IconButton>
-        }
+        
+      }
         title={title}
         subheader={mode}
       />
