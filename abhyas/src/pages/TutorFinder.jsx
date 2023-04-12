@@ -108,6 +108,8 @@ const TutorFinder = () => {
   const [open4, setopen4] = React.useState(false);
   const [userCardData, setUserCardData] = React.useState([]);
   const [distance,setDistance]=React.useState(5)
+  const [tutorCardData,setTutorCardData]=React.useState([])
+  const [searchDone,setSearchDone]=React.useState(false)
 
   let user = useSelector(state => state.user.value)
 
@@ -157,10 +159,28 @@ const TutorFinder = () => {
         lat:lat1
       });
       setOpen(false)
+      
     }
    
   }
 
+  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the earth in km
+    const dLat = deg2rad(lat2 - lat1); // deg2rad below
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      ;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+    return distance;
+  }
+  
+  function deg2rad(deg) {
+    return deg * (Math.PI/180);
+  }
 
   React.useEffect(() => {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -180,6 +200,7 @@ const TutorFinder = () => {
 
   const handleClose2 = () => {
     setOpen2(false);
+    setSearchDone(false);
   };
 
 
@@ -200,7 +221,10 @@ const TutorFinder = () => {
       const querySnapshot = await getDocs(query(collection(db, "Tutors"),where("email","==",user.email)));
       let tempData = []
       querySnapshot.forEach((doc) => {
+     
+    
           tempData.push(<JobCard {...doc.data()} delete={true} />)
+     
       });
       setUserCardData(tempData)
     }
@@ -208,6 +232,21 @@ const TutorFinder = () => {
   },[open3])
 
 
+  const handleSearch=async()=>{
+    const querySnapshot = await getDocs(query(collection(db, "Tutors"),where("mode","==",mode),where("email","!=",user.email)));
+    let tempData = []
+    querySnapshot.forEach((doc) => {
+      
+      if(getDistanceFromLatLonInKm(doc.data().lat,doc.data().lng,lat1,lng1)<distance){
+        tempData.push(<JobCard {...doc.data()} delete={false} />)
+      }
+      
+    });
+    setTutorCardData(tempData)
+    setSearchDone(true)
+
+
+  }
 
 
 
@@ -436,7 +475,13 @@ const TutorFinder = () => {
            
           </Toolbar>
         </AppBar>
-          
+        {(searchDone && tutorCardData.length>0) && tutorCardData}
+        {(searchDone && tutorCardData.length==0) && 
+        <Typography sx={{display:'flex',justifyContent:'center',alignItems:'center',marginTop:'30vh'}} variant='h3'>
+          No Tutors Found
+        </Typography>
+        }
+           {!searchDone && 
           <Carousel swipe={false} autoPlay={false}>
             <Map
             
@@ -454,7 +499,7 @@ const TutorFinder = () => {
                     <Marker longitude={lng1} latitude={lat1} offsetLeft={-20} offsetTop={-10} draggable onDrag={dragMarker1}/>
                  
             
-               
+         
               </Map>
               <Paper sx={{display:'flex',height:'90vh',width:'100vw',justifyContent:'center',alignItems:'center'}}>
                 <Stack  sx={{width:'40%'}}>
@@ -493,7 +538,7 @@ const TutorFinder = () => {
                         </ToggleButton>
                       </ToggleButtonGroup>
 
-                      <Button sx={{fontSize:'1.1em',marginTop:'20px',width:'60%'}} variant="contained">Submit</Button>
+                      <Button sx={{fontSize:'1.1em',marginTop:'20px',width:'60%'}} variant="contained" onClick={handleSearch}>Search</Button>
 
                   
                     
@@ -502,6 +547,7 @@ const TutorFinder = () => {
 
 
           </Carousel> 
+          }
 
          
       </Dialog>
