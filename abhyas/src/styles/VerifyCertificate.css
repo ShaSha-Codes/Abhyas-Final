@@ -20,6 +20,7 @@
 }
 .signatureimg{
     height :80px;
+    max-width: 150px;
 }
 .heading{
     color: #3c7979;

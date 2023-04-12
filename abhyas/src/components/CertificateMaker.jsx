@@ -31,9 +31,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { db,storage } from '../firebase';
 import { doc,addDoc } from "firebase/firestore";
-import { ref,uploadBytesResumable, uploadBytes,getDownloadURL,} from "firebase/storage";
+import { ref,uploadBytesResumable, uploadBytes,getDownloadURL, deleteObject} from "firebase/storage";
 import { nanoid } from 'nanoid';
-import {collection,query,where,getDoc,getDocs} from 'firebase/firestore'
+import {collection,query,where,getDoc,getDocs, deleteDoc} from 'firebase/firestore'
+
 
 
 
@@ -72,7 +73,6 @@ export default function CertificateMaker() {
     const [show,setShow] = React.useState(false);
     const [buttonContent,setButtonContent]=React.useState("");
     const [existingCertificates,setExistingCertificates]=React.useState([]);
-    const [trigger,setTrigger]=React.useState(false);
 
     const checker=useLogout()
     React.useEffect(() => {
@@ -124,6 +124,7 @@ export default function CertificateMaker() {
             })
 
             setSubmitted(true)
+            certificatesUpdater()
              });
           });
 
@@ -187,13 +188,18 @@ export default function CertificateMaker() {
                 const querySnapshot = await getDocs(q);
                 let students = []
                 querySnapshot.forEach((doc) => {    
-                    
+                  if ( existingCertificates.length===0){
+                    let tempData=doc.data()
+                    students.push(tempData.fname+" "+tempData.lname+" ("+tempData.email+")")
+                  }
+                  else{
                   for(let i=0;i<existingCertificates.length;i++){
                     if(existingCertificates[i].email!==doc.data().email){
                     let tempData=doc.data()
                     students.push(tempData.fname+" "+tempData.lname+" ("+tempData.email+")")
                     }
                   }
+                }
                     
                 });
                 setStudentsData(students)
@@ -215,7 +221,6 @@ export default function CertificateMaker() {
                 setButtonContent("Hide")
               }
             }
-
 
 
             React.useEffect(() => {
@@ -259,9 +264,7 @@ export default function CertificateMaker() {
                   
                     setAlertData({severity:'success',message:'Certificate Created'})
                     toggler(true)
-                    setTimeout(() => {
-                      navigate('/Teacher/'+classCode)
-                    },1000)
+                    certificatesUpdater()
               
                 })()
               }
@@ -341,7 +344,7 @@ export default function CertificateMaker() {
         >
           {studentsData.map((name) => (
             <MenuItem key={name} value={getStudentEmail(name)}>
-              <Checkbox checked={studentSelected.indexOf(name) > -1} />
+              <Checkbox checked={studentSelected.indexOf(getStudentEmail(name)) > -1} />
               <ListItemText primary={name} />
             </MenuItem>
           ))}
@@ -413,14 +416,26 @@ export default function CertificateMaker() {
              <Typography variant="body1" sx={{color:'black',marginTop:-1}}>
               {existingCertificates.map((certificate)=>{
                 return(
-                  
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
                     <Typography variant="h6" sx={{color:'black'}}>{certificate.name +" ("+certificate.email+") "}</Typography>
-                    <Button  onClick={()=>{setShowValue(); navigate('/VerifyCertificate/'+certificate.certificateCredential)}} sx={{color:'#3c7979',marginLeft:5,height:"10px"}}>View</Button>
+                    <Button onClick={()=>{setShowValue(); navigate('/VerifyCertificate/'+certificate.certificateCredential)}} sx={{color:'#3c7979',marginLeft:5,height:"10px"}}>View</Button>
+                    <Button onClick={async()=>{   
+                      const q = query(collection(db, "Certificates"), where("certificateCredential", "==", certificate.certificateCredential));
+                      const querySnapshot = await getDocs(q);
+                      querySnapshot.forEach((doc) => {
+                          deleteDoc(doc.ref);
+                        const logoRef = ref(storage, certificate.logo);
+                        const signatureRef = ref(storage, certificate.signature);
+                        deleteObject(logoRef);
+                        deleteObject(signatureRef);
+                        certificatesUpdater()
+                        console.log("deleted")
+                      });
+                    }} sx={{color:'red',marginLeft:5,height:"10px"}}>Delete</Button>
                     </div>
                 
                 )
-              })
+              })  
               }
              </Typography>
              </div>} 
