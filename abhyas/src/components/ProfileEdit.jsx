@@ -92,17 +92,7 @@ const ProfileEdit = (props) => {
       setSubmitted(true)
        });
     });
-
-
-
-
-
-
-
-
   }
-
-
 
 //Updates FireStore Database with the new data on submit state change
 React.useEffect(() => {
