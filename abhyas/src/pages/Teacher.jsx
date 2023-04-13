@@ -35,6 +35,7 @@ import Button from '@mui/material/Button';
 
 
 
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
     
@@ -95,8 +96,9 @@ const Teacher = () => {
     const [assignmentsData,setAssignmentsData] = React.useState([])
     const [quizzesData,setQuizzesData] = React.useState([])
     
-    
 
+    
+    
     const checker=useLogout()
     React.useEffect(() => {
         checker("teacher",classCode)
@@ -122,7 +124,6 @@ const Teacher = () => {
     const lecturesUpdater = async () => {
         const q = query(collection(db, "Lectures"), where("classCode", "==", classCode));
         const querySnapshot = await getDocs(q);
-       
         let lectures = []
         querySnapshot.forEach((doc) => {
             lectures.push(<LectureCard {...doc.data()}/>)
@@ -156,7 +157,7 @@ const Teacher = () => {
     React.useEffect(() => {
         notesUpdater()
         lecturesUpdater()
-        // assignmentsUpdater()
+        assignmentsUpdater()
         quizzesUpdater()
         speedDialValue===4 && navigate("/Teacher/CreateQuiz/Create/" + classCode)
         if(speedDialValue===5){
@@ -178,7 +179,6 @@ const Teacher = () => {
     <>
     <SideBar>
          <Box sx={{ width: '100%' }}>
-            
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="All" {...a11yProps(0)} />
@@ -295,9 +295,7 @@ const Teacher = () => {
             <AssignmentForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
             <LectureForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
             <NoteForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
-
         </Box>
-     
     </SideBar>
     <SpeedDialer speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}  actions={teacherActions}/>
     </>
