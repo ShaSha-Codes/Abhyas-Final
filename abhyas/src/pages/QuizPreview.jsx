@@ -43,7 +43,7 @@ function QuizPreview() {
    <Grid container direction="row" display="flex" justifyContent="center" alignItems="center" sx={{color:"black"}}> 
     <Typography variant="h4" alignItems="center" sx={{color:"black",textAlign:"center",marginBottom:"30px",
          background: "#2c3333",
-         color:"white",
+      
          width:"50%",
          borderRadius: "12px",
          boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
