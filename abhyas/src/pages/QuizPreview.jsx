@@ -40,7 +40,17 @@ function QuizPreview() {
 
 <> 
     <SideBar/>
-  <Typography variant="h4" sx={{color:"black",textAlign:"center",marginTop:"20px"}}>{quizzes.subject} Quiz</Typography>
+   <Grid container direction="row" display="flex" justifyContent="center" alignItems="center" sx={{color:"black"}}> 
+    <Typography variant="h4" alignItems="center" sx={{color:"black",textAlign:"center",marginBottom:"30px",
+         background: "#2c3333",
+         color:"white",
+         width:"50%",
+         borderRadius: "12px",
+         boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
+         backdropFilter: "blur(16px) brightness(80%)",
+         wordWrap: 'break-word',
+        border:"1px solid black",padding:"8px"}}>{quizzes.subject} Quiz</Typography>
+      </Grid>
   <Grid container direction="row" display="flex" justifyContent="center" alignItems="center" sx={{color:"black"}} >
     {quizzes.Questions.map((question, index) => (
       <Card key={index} display="flex" sx={{ marginBottom: '16px', width: '80%',marginLeft:"20px",
@@ -63,9 +73,15 @@ function QuizPreview() {
           
           ))}
          
-            <Typography variant="body1"   sx={{maxWidth:"500px",lineHeight:"1.5",marginTop:"20px",
+            <Typography variant="body1"   sx={{maxWidth:"300px",lineHeight:"1.5",marginTop:"20px",
+            background: "#2c3333",
+            color:"white",
+            borderRadius: "12px",
+            boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
+            backdropFilter: "blur(16px) brightness(80%)",
+            wordWrap: 'break-word',
              border:"1px solid black",padding:"8px",}}>
-                Answer:{question.correctAnswer}</Typography>
+                Answer : {question.correctAnswer}</Typography>
         </CardContent>
       </Card>
     ))}

@@ -15,7 +15,8 @@ import Lecture from './pages/Lecture'
 import GoLive from './pages/GoLive'
 import JoinLive from './pages/JoinLive'
 import VerifyCertificate from './pages/VerifyCertificate'
-
+import QuizPreview from './pages/QuizPreview'
+import CreateQuiz from './pages/CreateQuiz'
 import { Routes,Route } from 'react-router-dom'
 
 const App = () => {
@@ -32,6 +33,8 @@ const App = () => {
         <Route path='/Teacher/:classCode'element={<Teacher/>} />
         <Route path='/Student/:classCode'element={<Student/>} />
         <Route path='/Note/:noteCode'element={<Note/>} />
+        <Route path='Quiz/:quizCode'element={<QuizPreview/>} />
+        <Route path="Teacher/CreateQuiz/Create/:classCode" element={<CreateQuiz/>} />
         <Route path='/Lecture/:lecCode'element={<Lecture/>} />
         <Route path='/Teacher/Live/Create/:classCode' element={<GoLive/>} />
         <Route path='/Student/Live/Join/:classCode' element={<JoinLive/>} />

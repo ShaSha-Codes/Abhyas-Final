@@ -18,25 +18,26 @@ import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { useSelector,useDispatch} from 'react-redux';
 import {db} from '../firebase'
 import {collection,query,where,getDocs} from 'firebase/firestore'
-import QuizForm from '../components/QuizForm';
+import QuizCard from '../components/QuizCard';
 import AssignmentForm from '../components/AssignmentForm';
 import LectureForm from '../components/LectureForm';
 import NoteForm from '../components/NoteForm';
+import QuizPreview from '../components/QuizCard';
 import NoteCard from '../components/NoteCard';
 import LectureCard from '../components/LectureCard';
 import { Grid } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useLogout from '../hooks/useLogout';
 import ChatRoom from '../components/ChatRoom';
-import CertificateMaker from '../components/CertificateMaker';
 import { useNavigate } from 'react-router-dom';
+import CreateQuiz from './CreateQuiz';
+import Button from '@mui/material/Button';
 
 
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-
-
+    
     return (
       <div
         role="tabpanel"
@@ -54,6 +55,7 @@ function TabPanel(props) {
     );
   }
   
+
   TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
@@ -75,13 +77,15 @@ const teacherActions = [
     { icon: <LiveTvIcon />, name: 'Go Live' }
   ];
 
+
+
 const Teacher = () => {
     let dispatch = useDispatch()
     let user = useSelector(state => state.user.value)
     let navigate=useNavigate()
 
 
-
+    
     const {classCode} = useParams()
 
     const [value, setValue] = React.useState(0);
@@ -90,7 +94,8 @@ const Teacher = () => {
     const [lecturesData,setLecturesData] = React.useState([])
     const [assignmentsData,setAssignmentsData] = React.useState([])
     const [quizzesData,setQuizzesData] = React.useState([])
-
+    
+    
 
     const checker=useLogout()
     React.useEffect(() => {
@@ -98,8 +103,7 @@ const Teacher = () => {
     },[])
 
 
-
-
+    
     const notesUpdater = async () => {
         const q = query(collection(db, "Notes"), where("classCode", "==", classCode));
         const querySnapshot = await getDocs(q);
@@ -107,20 +111,24 @@ const Teacher = () => {
         querySnapshot.forEach((doc) => {
             
             let tempData=doc.data()
-     
+            console.log(doc.data())
             notes.push(<NoteCard {...tempData}/>)
         });
+        console.log(notes)
         setNotesData(notes)
     }
-
+     
+    
     const lecturesUpdater = async () => {
         const q = query(collection(db, "Lectures"), where("classCode", "==", classCode));
         const querySnapshot = await getDocs(q);
+       
         let lectures = []
         querySnapshot.forEach((doc) => {
             lectures.push(<LectureCard {...doc.data()}/>)
         });
         setLecturesData(lectures)
+   
     }
 
     const assignmentsUpdater = async () => {
@@ -132,24 +140,25 @@ const Teacher = () => {
         });
         setAssignmentsData(assignments)
     }
-
-    const quizzesUpdater = async () => {
-        const q = query(collection(db, "Quizzes"), where("classCode", "==", classCode));
-        const querySnapshot = await getDocs(q);
-        let quizzes = []
-        querySnapshot.forEach((doc) => {
-            quizzes.push(doc.data())
-        });
-        setQuizzesData(quizzes)
-    }
-
-
+    
+  
+  const quizzesUpdater = async () => {
+      const q = query(collection(db, "Quizzes"), where("classCode", "==", classCode));
+      
+      const querySnapshot = await getDocs(q);
+      let quizzes = []
+      querySnapshot.forEach((doc) => {
+          let tempData=doc.data()
+          quizzes.push(<QuizCard {...tempData}/>)
+      })
+      setQuizzesData(quizzes)
+};
     React.useEffect(() => {
         notesUpdater()
         lecturesUpdater()
         // assignmentsUpdater()
-        // quizzesUpdater()
-        
+        quizzesUpdater()
+        speedDialValue===4 && navigate("/Teacher/CreateQuiz/Create/" + classCode)
         if(speedDialValue===5){
           navigate("/Teacher/Live/Create/" + classCode)
         }
@@ -169,7 +178,7 @@ const Teacher = () => {
     <>
     <SideBar>
          <Box sx={{ width: '100%' }}>
-        
+            
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="All" {...a11yProps(0)} />
@@ -178,7 +187,6 @@ const Teacher = () => {
                     <Tab label="Assignments" {...a11yProps(3)} />
                     <Tab label="Quizzes" {...a11yProps(4)} />
                     <Tab label="Chat" {...a11yProps(5)} />
-                    <Tab label="Certificates" {...a11yProps(6)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -200,7 +208,6 @@ const Teacher = () => {
                 </Grid>
               </AccordionDetails>
             </Accordion>
-            
             }
           { lecturesData.length>0 &&
             <Accordion defaultExpanded={true}>
@@ -239,8 +246,8 @@ const Teacher = () => {
             </Accordion>
           }
 
-
-          { quizzesData.length>0 &&
+           */
+            quizzesData.length &&
 
             <Accordion defaultExpanded={true}>
               <AccordionSummary
@@ -252,16 +259,16 @@ const Teacher = () => {
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container spacing={1}>
-                    {notesData}
+                    {quizzesData}
                 </Grid>
               </AccordionDetails>
             </Accordion>
           }
-              */
+              
               
         
               
-              }
+            
             
                 
             </TabPanel>
@@ -279,16 +286,13 @@ const Teacher = () => {
                 Assignments
             </TabPanel>
             <TabPanel value={value} index={4}>
-                Quizzes
+              <Grid container spacing={1
+              }>{quizzesData}</Grid>
             </TabPanel>
             <TabPanel value={value} index={5}>
                 <ChatRoom/>
             </TabPanel>
-            <TabPanel value={value} index={6}>
-                <CertificateMaker/>
-            </TabPanel>
             <AssignmentForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
-            <QuizForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
             <LectureForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
             <NoteForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
 
