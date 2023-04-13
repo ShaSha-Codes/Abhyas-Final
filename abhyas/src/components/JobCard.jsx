@@ -17,8 +17,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from '../firebase';
-
-
+import { Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function JobCard(props) {
    
@@ -31,10 +31,19 @@ export default function JobCard(props) {
    
   }
 
+  const navigate=useNavigate()
+
+  const handleNavigation=async()=>{
+    if(!props.delete){
+        navigate(`/Tutor/${tutorCode}`)
+    }
+   
+  }
 
 
   return (
-    <Card sx={{ display:display,maxWidth: 345 }}>
+    <Grid item xs={12} sm={6} md={4} lg={3}>
+    <Card elevation={24} sx={{ display:display,maxWidth: 345,height:200 }} onClick={handleNavigation}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} src={photoUrl} aria-label="Profile Pic" />
@@ -53,11 +62,12 @@ export default function JobCard(props) {
   
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {description}
+          {description.slice(0,100)}
         </Typography>
       </CardContent>
     
       
     </Card>
+    </Grid>
   );
 }

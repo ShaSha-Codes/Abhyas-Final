@@ -426,7 +426,10 @@ const TutorFinder = () => {
           
           </Toolbar>
         </AppBar>
-        {userCardData}
+        <Grid container sx={{padding:'2em'}}>
+          {userCardData}
+        </Grid>
+    
          
       </Dialog>
 
@@ -475,7 +478,11 @@ const TutorFinder = () => {
            
           </Toolbar>
         </AppBar>
-        {(searchDone && tutorCardData.length>0) && tutorCardData}
+        {(searchDone && tutorCardData.length>0) && 
+        <Grid container sx={{padding:'2em'}}>
+            {tutorCardData}
+        </Grid>
+        }
         {(searchDone && tutorCardData.length==0) && 
         <Typography sx={{display:'flex',justifyContent:'center',alignItems:'center',marginTop:'30vh'}} variant='h3'>
           No Tutors Found

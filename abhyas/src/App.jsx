@@ -14,7 +14,7 @@ import PageNotFound from './pages/PageNotFound'
 import Lecture from './pages/Lecture'
 import GoLive from './pages/GoLive'
 import JoinLive from './pages/JoinLive'
-
+import Tutor from './pages/Tutor'
 import { Routes,Route } from 'react-router-dom'
 
 const App = () => {
@@ -34,6 +34,7 @@ const App = () => {
         <Route path='/Lecture/:lecCode'element={<Lecture/>} />
         <Route path='/Teacher/Live/Create/:classCode' element={<GoLive/>} />
         <Route path='/Student/Live/Join/:classCode' element={<JoinLive/>} />
+        <Route path='/Tutor/:tutorCode' element={<Tutor/>} />
         <Route path='/*' element={<PageNotFound/>} />
     </Routes>
   )
