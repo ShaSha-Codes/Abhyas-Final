@@ -32,6 +32,7 @@ import ChatRoom from '../components/ChatRoom';
 import { useNavigate } from 'react-router-dom';
 import CreateQuiz from './CreateQuiz';
 import Button from '@mui/material/Button';
+import CertificateMaker from '../components/CertificateMaker';
 
 
 
@@ -187,6 +188,7 @@ const Teacher = () => {
                     <Tab label="Assignments" {...a11yProps(3)} />
                     <Tab label="Quizzes" {...a11yProps(4)} />
                     <Tab label="Chat" {...a11yProps(5)} />
+                    <Tab label="Certificates" {...a11yProps(6)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -292,10 +294,13 @@ const Teacher = () => {
             <TabPanel value={value} index={5}>
                 <ChatRoom/>
             </TabPanel>
+            <TabPanel value={value} index={6}>
+                <CertificateMaker/>
+            </TabPanel>
             <AssignmentForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
             <LectureForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
             <NoteForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
-
+              
         </Box>
      
     </SideBar>

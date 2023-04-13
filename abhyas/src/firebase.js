@@ -13,15 +13,15 @@ import { getStorage } from "firebase/storage";
 
 
 // Main One
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCdQGpKoWea0IaYa5d-6PVQgieGzjhgGNo",
-//   authDomain: "abhyas-1691a.firebaseapp.com",
-//   projectId: "abhyas-1691a",
-//   storageBucket: "abhyas-1691a.appspot.com",
-//   messagingSenderId: "1036059109042",
-//   appId: "1:1036059109042:web:b21355fb936c3066594bab",
-//   measurementId: "G-6K1BC61Q2L"
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyCdQGpKoWea0IaYa5d-6PVQgieGzjhgGNo",
+  authDomain: "abhyas-1691a.firebaseapp.com",
+  projectId: "abhyas-1691a",
+  storageBucket: "abhyas-1691a.appspot.com",
+  messagingSenderId: "1036059109042",
+  appId: "1:1036059109042:web:b21355fb936c3066594bab",
+  measurementId: "G-6K1BC61Q2L"
+};
 
 // Backup One
 // const firebaseConfig = {
@@ -35,15 +35,15 @@ import { getStorage } from "firebase/storage";
 // };
 
 // Backup Two
-const firebaseConfig = {
-  apiKey: "AIzaSyBvukW7amQegzrQmtvg7Jqr9CglVVk8SGY",
-  authDomain: "final-year-project-257eb.firebaseapp.com",
-  projectId: "final-year-project-257eb",
-  storageBucket: "final-year-project-257eb.appspot.com",
-  messagingSenderId: "120305997208",
-  appId: "1:120305997208:web:7b13e0c786da69a99907ed",
-  measurementId: "G-M3CS33QMQ7"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBvukW7amQegzrQmtvg7Jqr9CglVVk8SGY",
+//   authDomain: "final-year-project-257eb.firebaseapp.com",
+//   projectId: "final-year-project-257eb",
+//   storageBucket: "final-year-project-257eb.appspot.com",
+//   messagingSenderId: "120305997208",
+//   appId: "1:120305997208:web:7b13e0c786da69a99907ed",
+//   measurementId: "G-M3CS33QMQ7"
+// };
 
 
 // Initialize Firebase
