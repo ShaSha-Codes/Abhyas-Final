@@ -18,7 +18,7 @@ import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { useSelector,useDispatch} from 'react-redux';
 import {db} from '../firebase'
 import {collection,query,where,getDocs} from 'firebase/firestore'
-import QuizCard from '../components/QuizCard';
+import StudentQuizCard from '../components/StudentQuizCard';
 import AssignmentForm from '../components/AssignmentForm';
 import LectureForm from '../components/LectureForm';
 import NoteForm from '../components/NoteForm';
@@ -86,12 +86,9 @@ const Student = () => {
 
   
   
-  const checker=useLogout()
-  React.useEffect(() => {
-      checker("student",classCode)
-  },[])
+ 
 
-
+  
   
   const notesUpdater = async () => {
       const q = query(collection(db, "Notes"), where("classCode", "==", classCode));
@@ -133,15 +130,16 @@ const Student = () => {
 
 const quizzesUpdater = async () => {
     const q = query(collection(db, "Quizzes"), where("classCode", "==", classCode));
-    
     const querySnapshot = await getDocs(q);
     let quizzes = []
     querySnapshot.forEach((doc) => {
         let tempData=doc.data()
-        quizzes.push(<QuizCard {...tempData}/>)
-    })
+        quizzes.push(<StudentQuizCard {...tempData}/>)
+    },[quizzesData])
     setQuizzesData(quizzes)
 };
+ 
+
   React.useEffect(() => {
       notesUpdater()
       lecturesUpdater()
@@ -201,7 +199,7 @@ return (
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              
+
               <Typography>Lectures</Typography>
             </AccordionSummary>
             <AccordionDetails>

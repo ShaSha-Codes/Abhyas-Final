@@ -82,6 +82,7 @@ const handleEmailSubmit=(event)=>{
   console.log(email)
   const docRef = doc(db, 'Quizzes', quizCode);  
   const docSnap = await getDoc(docRef);
+  setTotalMarks(docSnap.data().totalMarks)
   console.log(email)
   setSubmitBool(true);
   if (docSnap.exists()) {
@@ -106,7 +107,7 @@ const handleEmailSubmit=(event)=>{
           <Grid item xs={12} sm={8} md={6}>
             <Paper style={{ padding: 16 }}>
               <Typography variant="h5" align="center">
-                You Scored {marks} out of {quizData.totalMarks}
+                You Scored {marks} out of {totalMarks}
               </Typography>
             </Paper>
           </Grid>
