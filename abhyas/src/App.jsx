@@ -21,6 +21,7 @@ import CreateQuiz from './pages/CreateQuiz'
 import StudentQuizPreview from './pages/StudentQuizPreview'
 import { Routes,Route } from 'react-router-dom'
 import MarketplaceNotes from './pages/MarketplaceNotes'
+
 const App = () => {
   return (
     <Routes>
