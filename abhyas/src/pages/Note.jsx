@@ -123,17 +123,11 @@ const Note = () => {
          spacing={0} >
      
                     <Grid xs={6}>
-                            <Paper sx={{width:'700px',borderRadius:'10px'}} elevation={12} >
                                     <Stack spacing={0} alignItems={'center'}>
-                                        <Document  file={note?.file} onLoadError={console.error} onLoadSuccess={onDocumentLoadSuccess}>
+                                        <Document file={note?.file} onLoadError={console.error} onLoadSuccess={onDocumentLoadSuccess}>
                                             <Page scale={pageScale} height='800' pageNumber={pageNumber} />
                                         </Document>
                                     </Stack>
-                                
-                    
-                            </Paper >
-                    
-                        
                     </Grid>
             </Grid>
        
