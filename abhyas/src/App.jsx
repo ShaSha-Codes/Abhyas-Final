@@ -21,6 +21,8 @@ import CreateQuiz from './pages/CreateQuiz'
 import StudentQuizPreview from './pages/StudentQuizPreview'
 import { Routes,Route } from 'react-router-dom'
 import MarketplaceNotes from './pages/MarketplaceNotes'
+import Assignment from './pages/Assignment'
+
 
 const App = () => {
   return (
@@ -45,6 +47,7 @@ const App = () => {
         <Route path='/Tutor/:tutorCode' element={<Tutor/>} />
         <Route path='/VerifyCertificate/:certificateCredential' element={<VerifyCertificate/>} />
         <Route path='/Marketplace/:id' element={<MarketplaceNotes/>} />
+        <Route path='/Assignment/:id' element={<Assignment/>} />
         <Route path='/*' element={<PageNotFound/>} />
     </Routes>
   )

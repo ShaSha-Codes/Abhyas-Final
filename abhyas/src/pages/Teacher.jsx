@@ -33,7 +33,7 @@ import { useNavigate } from 'react-router-dom';
 import CreateQuiz from './CreateQuiz';
 import Button from '@mui/material/Button';
 import CertificateMaker from '../components/CertificateMaker';
-
+import AssignmentCard from '../components/AssignmentCard';
 
 
 
@@ -138,7 +138,7 @@ const Teacher = () => {
         const querySnapshot = await getDocs(q);
         let assignments = []
         querySnapshot.forEach((doc) => {
-            assignments.push(doc.data())
+            assignments.push(<AssignmentCard {...doc.data()} />)
         });
         setAssignmentsData(assignments)
     }
@@ -229,6 +229,7 @@ const Teacher = () => {
 
 
 }
+
 { 
 
           assignmentsData.length>0 &&
@@ -242,14 +243,19 @@ const Teacher = () => {
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container spacing={1}>
-                    {notesData}
+                    {assignmentsData}
                 </Grid>
               </AccordionDetails>
             </Accordion>
-          }
+          
+    }
 
            
-            {quizzesData.length &&
+            
+
+
+{
+            quizzesData.length &&
 
             <Accordion defaultExpanded={true}>
               <AccordionSummary
@@ -285,7 +291,9 @@ const Teacher = () => {
                 </Grid>
             </TabPanel>
             <TabPanel value={value} index={3}>
-                Assignments
+              <Grid container spacing={1}>
+                {assignmentsData}
+              </Grid>
             </TabPanel>
             <TabPanel value={value} index={4}>
               <Grid container spacing={1
