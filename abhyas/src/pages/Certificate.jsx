@@ -50,6 +50,7 @@ const Certificate = () => {
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
            
           </Box>
+          { certificateData.length!==0 &&
           
           <Grid container spacing={3}>
                 {
@@ -63,7 +64,12 @@ const Certificate = () => {
             </Grid>
            
        
-        
+              }
+
+              {
+                certificateData.length===0 &&
+                <h1>You have no certificates yet.... </h1 >
+              }
         </Box>
       
     </SideBar>

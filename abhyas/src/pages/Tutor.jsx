@@ -48,21 +48,22 @@ const Tutor = () => {
                   <Avatar sx={{width:'150px',height:'150px',position:'absolute',left:'50%',top:'-50px',transform:'translateX(-50%)'}} src={tutor.photoUrl}/>
                   <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'20px',marginTop:'100px'}}>
                       <Typography variant='h4'>
-                        {tutor.name}
+                        <strong>{tutor.name}</strong>
                       </Typography>
+                      <br/>
                       <Grid container>
-                          <Grid item xs={6}>
+                          <Grid item xs={6} sx={{pr:2}}>
                               
                               <Typography variant='h6'>
-                                Title: {tutor.title}
+                                <strong>Title:</strong> {tutor.title}
                               </Typography>
                               <Typography variant='h6'>
-                                Description: {tutor.description}
+                                <strong>Description:</strong> {tutor.description}
                               </Typography>
                               <Typography variant='h6'>
-                                Mode: {tutor.mode}
+                              <strong>Mode:</strong> {tutor.mode}
                               </Typography><Typography variant='h6'>
-                                  Email: {tutor.email}
+                              <strong>Email:</strong>  {tutor.email}
                               </Typography>
                               
 
@@ -75,7 +76,7 @@ const Tutor = () => {
                                     zoom: 2
                                   }}
                                   mapboxAccessToken='pk.eyJ1IjoiYW1hZGV1czA2NDAiLCJhIjoiY2xnYzA2NmJ2MWVrajNqbzZ5dDk5c3B1MiJ9.6Z4SZbQ_jRsoXM-hFKU3uQ'
-                                  style={{width:'15',height:'35vh'}} 
+                                  style={{width:'15',height:'35vh',borderRadius:'20px'}} 
                                   mapStyle="mapbox://styles/mapbox/streets-v9">
                                         <Marker longitude={tutor.lng} latitude={tutor.lat} />
                                         <NavigationControl position="bottom-right" />

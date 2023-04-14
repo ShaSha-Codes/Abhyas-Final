@@ -1,6 +1,6 @@
 import React from 'react'
 import SideBar from '../components/SideBar'
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
+import { Document, Page } from 'react-pdf/dist/esm/entry.vite';
 import { useParams } from 'react-router-dom';
 import {doc,getDoc} from 'firebase/firestore'
 import {db} from '../firebase'
@@ -13,6 +13,8 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import DownloadIcon from '@mui/icons-material/Download';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import useLogout from '../hooks/useLogout';
 
 const Note = () => {
@@ -20,6 +22,7 @@ const Note = () => {
     const [note,setNote] = React.useState('')
     const [numPages, setNumPages] = React.useState(null);
     const [pageNumber, setPageNumber] = React.useState(1);
+    const [pageScale, setPageScale] = React.useState(1);
     const checker=useLogout()
 
     React.useEffect(()=>{
@@ -77,38 +80,16 @@ const Note = () => {
   
   return (
     <SideBar>
-        <Grid container 
-
-  alignItems="center"
-  justifyContent="center"
-  spacing={2} >
-     
-                    <Grid xs={6}>
-                    <Paper sx={{ml:25,minHeight:'300px',p:5,width:'500px',borderRadius:'10px'}} elevation={12} >
-                        <Typography variant="h5" component="h1" gutterBottom>
-                                Title:
-                            </Typography>
+        <Grid xs={6}>
+                    <Paper sx={{p:1,width:'100%', bgcolor:"#f9f9f9",borderRadius:0}} elevation={0} >
                             <Typography variant="h6" component="h2" gutterBottom>
                                 {note?.title}
-                            </Typography>
-                            <Typography variant="h5" component="h2" gutterBottom>
-                                Descrption:
-                            </Typography>
-                            <Typography variant="h6" component="h3" gutterBottom>
-                                {note?.description}
                             </Typography>
                             </Paper>
                     </Grid>
                     <Grid xs={6}>
-                            <Paper sx={{width:'700px',borderRadius:'10px'}} elevation={12} >
-                                    <Stack spacing={0} alignItems={'center'}>
-                                        <Document  file={note?.file} onLoadSuccess={onDocumentLoadSuccess}>
-                                            <Page height='800' pageNumber={pageNumber} />
-                                        </Document>
-                                        <p style={{margin:'0px'}}>
-                                            Page {pageNumber} of {numPages}
-                                        </p>
-                                        <Stack justifyContent="center"direction={'row'}>
+                    <Paper sx={{p:0,width:'100%', bgcolor:"white",borderRadius:0}} elevation={2} >
+                    <Stack direction={'row'} spacing={2}>
                                             <IconButton onClick={onButtonClick}>
                                            
                                                 <DownloadIcon />
@@ -117,15 +98,39 @@ const Note = () => {
                                             <IconButton onClick={leftClickHandler}>
                                                 <ArrowCircleLeftIcon />
                                             </IconButton>
+                                            <div style={{display:"flex", alignItems:"center"}}>{pageNumber} / {numPages}</div>
                                             <IconButton onClick={rightClickHandler}>
                                                 <ArrowCircleRightIcon />
                                             </IconButton>
+                                            <IconButton onClick={()=>setPageScale(prevPageScale=>prevPageScale+0.25)}>
+                                                <ZoomInIcon />
+                                            </IconButton>
+                                            <div style={{display:"flex", alignItems:"center",marginLeft:0,marginRight:0}}>
+                                            <Typography color="text.secondary" variant="body2" component="div" gutterBottom>
+                                                {parseInt(pageScale*100)}%
+                                            </Typography>
+                                            </div>
+                                            <IconButton style={{marginLeft:0}} onClick={()=>setPageScale(prevPageScale=>prevPageScale-0.25)}>
+                                                <ZoomOutIcon/>
+                                            </IconButton>
                                         </Stack>
-                                        
-                                        
+                            </Paper>
+                    </Grid>
+        <Grid container 
+        sx={{bgcolor:'#e4e4e4',pt:'10px',pb:'10px'}}
+        alignItems="center"
+         justifyContent="center"
+         spacing={0} >
+     
+                    <Grid xs={6}>
+                            <Paper sx={{width:'700px',borderRadius:'10px'}} elevation={12} >
+                                    <Stack spacing={0} alignItems={'center'}>
+                                        <Document  file={note?.file} onLoadError={console.error} onLoadSuccess={onDocumentLoadSuccess}>
+                                            <Page scale={pageScale} height='800' pageNumber={pageNumber} />
+                                        </Document>
                                     </Stack>
                                 
-                                    
+                    
                             </Paper >
                     
                         

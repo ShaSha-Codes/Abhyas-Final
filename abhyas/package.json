@@ -16,6 +16,7 @@
     "@mui/joy": "^5.0.0-alpha.73",
     "@mui/material": "^5.11.13",
     "@reduxjs/toolkit": "^1.9.3",
+    "esbuild": "^0.17.16",
     "firebase": "^9.18.0",
     "geopattern": "^1.2.3",
     "gsap": "^3.11.5",

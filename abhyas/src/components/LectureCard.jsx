@@ -22,7 +22,7 @@ export default function LectureCard(props) {
 
   return (
     <Grid md={4} sm={6}xs={12}>
-    <Card onClick={handleClick} sx={{ marginBottom:'10px',marginRight:'10px',width:'95%',maxWidth:'500px',display: 'flex' }}>
+    <Card onClick={handleClick} sx={{ marginBottom:'10px',marginRight:'10px',width:'95%',maxWidth:'500px',display: 'flex', bgcolor:"#f2f2f2 " }}>
       <CardActionArea>
         <CardMedia
           component="img"

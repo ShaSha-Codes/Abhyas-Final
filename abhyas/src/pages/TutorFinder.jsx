@@ -297,7 +297,7 @@ const TutorFinder = () => {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: 'relative' }}>
+        <AppBar sx={{ position: 'relative', bgcolor:"#3c7979" }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -410,7 +410,7 @@ const TutorFinder = () => {
         onClose={handleClose3}
         TransitionComponent={Transition3}
       >
-        <AppBar sx={{ position: 'relative' }}>
+        <AppBar sx={{ position: 'relative', bgcolor:"#3c7979" }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -462,7 +462,7 @@ const TutorFinder = () => {
         onClose={handleClose2}
         TransitionComponent={Transition2}
       >
-        <AppBar sx={{ position: 'relative' }}>
+        <AppBar sx={{ position: 'relative', bgcolor:"#3c7979" }}>
           <Toolbar>
             <IconButton
               edge="start"

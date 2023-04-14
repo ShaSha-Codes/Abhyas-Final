@@ -1,5 +1,4 @@
 import SideBar from '../components/SideBar'
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
 import { useParams } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
@@ -92,3 +91,4 @@ function QuizPreview() {
 }
 
 export default QuizPreview
+
