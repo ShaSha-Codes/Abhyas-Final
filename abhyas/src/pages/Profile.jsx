@@ -51,7 +51,8 @@ const Dashboard = () => {
   
         <SideBar>
 
-    <div style={{height:'30vh',borderRadius:'20px', backgroundImage:"url(" +generatePattern(user.fname)+ ")"}}>
+    <div style={{height:'30vh',borderRadius:'20px',display:"flex", backgroundImage:"url(" +generatePattern(user.fname)+ ")"}}>
+    <Button elevation={0} sx={{ marginLeft:"auto",borderRadius:"0px 20px 20px 0px",color:"white", bgcolor:"#285252","&:hover": {backgroundColor: '#142929' },}} variant="contained" onClick={toggler}>Update</Button>
           </div>
     
           <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'20px'}}>
@@ -62,7 +63,26 @@ const Dashboard = () => {
                         <strong>{user.fname+ " " + user.lname}</strong>
                       </Typography>
                       <br/>
+                      <Dialog
+                    sx={{ '& .MuiDialogContent-root': { padding:0 },borderRadius: '10px' }}
+                    open={toggleValue}
+                    onClose={toggler}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                 
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        <ProfileEdit user={user}/>
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button sx={{bgcolor:"#3c7979", color:"white","&:hover": {
+                  backgroundColor: '#285252'
+                } }}onClick={()=>toggler(false)}>Cancel</Button>
                       
+                    </DialogActions>
+               </Dialog>       
                       <Grid container sx={{height:"100%",bgcolor:"#f2f2f2", borderRadius:"20px"}}>
                           <Grid item xs={5.95} sx={{pr:1, pl:1}}>
                               
@@ -94,91 +114,6 @@ const Dashboard = () => {
                   
               </Paper>
             </div>
-                {/* <div style={{display: 'flex',height:'70vh', justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection:'column'}} >
-                  <Card sx={{ display: 'flex',width:'100%', alignItems:'center',bgcolor:"#f6f6f6" }}>
-                    
-                    <Stack sx={{margin:2}}>
-                      <Avatar alt="Profile Pic" sx={{width: '25vw', height: '25vw',maxWidth:"150px", maxHeight:"150px", border:"0.5rem solid white",}} src={user.photoUrl} />
-                    </Stack>
-                  
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  
-                  <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Stack spacing={5}>
-                    
-                    <Typography component="div" variant="h4" ><strong>
-                    {user.fname+ " " + user.lname}
-                    </strong>
-                    </Typography>
-        
-                    </Stack>
-                    
-                  </CardContent>
-                  
-              
-                  <Dialog
-                    sx={{ '& .MuiDialogContent-root': { padding:0 },borderRadius: '10px' }}
-                    open={toggleValue}
-                    onClose={toggler}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                 
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">
-                        <ProfileEdit user={user}/>
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button sx={{bgcolor:"#3c7979", color:"white","&:hover": {
-                  backgroundColor: '#285252'
-                } }}onClick={()=>toggler(false)}>Cancel</Button>
-                      
-                    </DialogActions>
-               </Dialog>
-                
-              
-                </Box>
-                <Button sx={{ marginLeft:"auto", marginRight:"4%", bgcolor:"#3c7979","&:hover": {backgroundColor: '#285252' },}} variant="contained" onClick={toggler}>Update</Button>
-              
-              </Card>
-              <Card sx={{ display: 'flex',width:'100%', alignItems:'center', bgcolor:"#f6f6f6", marginTop:"10px"}}>
-
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Stack spacing={5}>
-                    <Typography variant="h5" color="text.secondary" component="div">
-                      <strong>Email: </strong> {user.email}
-                    </Typography>
-                    <Typography variant="h5" color="text.secondary" component="div">
-                      <strong>Phone No: </strong> {user.phoneNo}
-                    </Typography>
-                    <Typography variant="h5" color="text.secondary" component="div">
-                      <strong>Gender: </strong> {user.gender}
-                    </Typography>
-        
-                    </Stack>
-                    
-                  </CardContent>
-              
-              
-              </Card>
-              <Card sx={{ display: 'flex',width:'100%', alignItems:'center', bgcolor:"#f6f6f6", marginTop:"10px" }}>
-
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Stack spacing={5}>
-                    <Typography variant="h5" color="text.secondary" component="div">
-                      Pending Activities:
-                    </Typography>
-                    
-        
-                    </Stack>
-                    
-                  </CardContent>
-              
-                    
-              </Card>
-              
-              </div> */}
         </SideBar>
         
   
