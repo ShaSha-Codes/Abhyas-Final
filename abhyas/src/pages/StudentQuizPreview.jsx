@@ -3,15 +3,16 @@ import { useEffect,useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {doc,getDoc} from 'firebase/firestore'
 import {db} from '../firebase';
-import { Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { Box, Button, List, ListItem} from '@mui/material';
+
 
 
 function StudentQuizPreview() {
 
   const [Questions, setQuestions] = useState([]);
   const [marks,setMarks]=useState(0);
-  
+  const [email,setEmail] = useState("");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(null);
   const [quizzes,setQuizzes]=useState([])
@@ -28,10 +29,23 @@ function StudentQuizPreview() {
     })();
   }, []);
  
+ const handleEmail=(e)=>{
+    setEmail(e.target.value)
+ }
  
+const [emailBool,setEmailBool]=useState(false)
+
+ const handleEmailSubmit=(event)=>{
+  event.preventDefault();
+    setEmailBool(true)
+ } 
+
+  
+
+  // Set up the timer
   useEffect(() => {
-    if (Questions.length > 0 && currentQuestionIndex<Questions.length){
-      const timeLimit = Questions[currentQuestionIndex].timer*60
+    if (emailBool && Questions.length > 0 && currentQuestionIndex < Questions.length) {
+      const timeLimit = Questions[currentQuestionIndex].timer * 60
       setTimeRemaining(timeLimit);
       const timerId = setInterval(() => {
         setTimeRemaining(prevTimeRemaining => {
@@ -44,31 +58,53 @@ function StudentQuizPreview() {
       }, 1000);
       return () => clearInterval(timerId);
     }
-  }, [Questions,currentQuestionIndex]);
+  }, [Questions, currentQuestionIndex, emailBool]);
 
+
+  
   const handleAnswerSelected = (answer) => {
     // Check the answer and move to the next question
     const isCorrect = answer === Questions[currentQuestionIndex].correctAnswer;
      if (isCorrect) {setMarks(prevMarks => prevMarks + 1)};
     setCurrentQuestionIndex(prevIndex => prevIndex + 1);
   };
-
+   
+  
+  //fetching the data from the database and updating the student's array
+  const handleSubmit=async()=>{
+    const docRef = doc(db, 'Quizzes', quizCode);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const quizData = docSnap.data(e);
+    const newStudent = {
+      email: email,
+      marks: marks,
+    };
+    quizData.students.push(newStudent);
+    await doc(db, 'Quizzes', quizCode).set(quizData);
+  }
+  }
+  
+  
+ 
   if (Questions.length === 0) {
     return <div>Loading...</div>;
   }
   
-
+  
   if (currentQuestionIndex == Questions.length) {
     return <div>{marks}</div>;
   }
+ 
+ 
 
-  return (
+  if(emailBool){return(
     <>
       <Typography>{subject}</Typography>
       <QuestionCard index={currentQuestionIndex} question={Questions[currentQuestionIndex]} 
       timeRemaining={timeRemaining} onAnswerSelected={handleAnswerSelected} />
-      <Button variant="subtitle1" 
-      type="submit"
+      <Button  
+      type="submit" onClick={handleSubmit} variant="contained"
  sx={{ textAlign: 'center', fontWeight: 500,display: 'flex', justifyContent: 'center', alignItems: 'center',
  marginLeft:'700px',
  marginTop: '20px', backgroundColor: '#2c3333', color: 'white', padding: '10px',
@@ -76,10 +112,25 @@ function StudentQuizPreview() {
 Submit
 </Button>
     </>
-    
-  );
-}
+  )}
+  else{ return(
+    <>
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+  <form onSubmit={handleEmailSubmit} style={{ display: 'flex', flexDirection: 'column', 
+  alignItems: 'center', width: '50%' }}>
+    <TextField id="outlined-basic" required
+    label="please enter your email to get Started" variant="outlined"  
+    onChange={handleEmail}
+    style={{ marginBottom: '20px', width: '100%' }} />
+    <Button variant="subtitle1" type="submit" style={{ width: '50%', backgroundColor: '#2c3333', color: 'white', padding: '10px', borderRadius: '5px', boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.2)', }}>
+      Start Quiz
+    </Button>
+  </form>
+</div>
+    </>
 
+  )}
+}
 
 const QuestionCard = ({index, question, onAnswerSelected, timeRemaining }) => {
   return (
