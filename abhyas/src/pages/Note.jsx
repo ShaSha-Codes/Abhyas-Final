@@ -1,6 +1,6 @@
 import React from 'react'
 import SideBar from '../components/SideBar'
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
+import { Document, Page } from 'react-pdf/dist/esm/entry.vite';
 import { useParams } from 'react-router-dom';
 import {doc,getDoc} from 'firebase/firestore'
 import {db} from '../firebase'
@@ -102,7 +102,7 @@ const Note = () => {
                     <Grid xs={6}>
                             <Paper sx={{width:'700px',borderRadius:'10px'}} elevation={12} >
                                     <Stack spacing={0} alignItems={'center'}>
-                                        <Document  file={note?.file} onLoadSuccess={onDocumentLoadSuccess}>
+                                        <Document  file={note?.file} onLoadError={console.error} onLoadSuccess={onDocumentLoadSuccess}>
                                             <Page height='800' pageNumber={pageNumber} />
                                         </Document>
                                         <p style={{margin:'0px'}}>
