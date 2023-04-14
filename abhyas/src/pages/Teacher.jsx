@@ -229,9 +229,10 @@ const Teacher = () => {
 
 
 }
+
 { 
 
-           assignmentsData.length>0 &&
+          assignmentsData.length>0 &&
             <Accordion defaultExpanded={true}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -249,6 +250,8 @@ const Teacher = () => {
           
     }
 
+           
+            
 
 
 {
@@ -268,8 +271,8 @@ const Teacher = () => {
                 </Grid>
               </AccordionDetails>
             </Accordion>
-          }
-              
+          
+            }
               
         
               
