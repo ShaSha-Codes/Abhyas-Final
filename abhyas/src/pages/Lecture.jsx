@@ -44,14 +44,22 @@ const Lecture = () => {
     getLecture()
   },[])
   
+  React.useEffect(() => {
+    document.body.style.backgroundColor = "black";
+    return () => {
+      document.body.style.backgroundColor = "white";
+    };
+  }, []);
+
   console.log(lecture?.file)
   return (
     <SideBar>
       <Grid 
-      container
+  container
   alignItems="center"
   justifyContent="center"
-  spacing={2} >
+  spacing={2} 
+  sx={{height:"100%"}}>
 
  
 
@@ -64,18 +72,18 @@ const Lecture = () => {
             </Grid>
         }
         {
-          <Grid xs={12} >
-          <Paper sx={{marginTop:1,p:1.5,paddingLeft:10,minHeight:'10px',backgroundColor:'#f2f2f2',borderRadius:2}}>
+          <Grid sx={{marginTop:-3, width:"90%"}}xs={12} >
+          <Paper sx={{p:1.5,paddingLeft:10,minHeight:'10px',backgroundColor:'#202124',borderRadius:2}}>
             <div style={{display:"flex", style:"row" , justifyContent:"space-between" }}>
-            <Typography variant="h5" sx={{fontWeight:'bold',color:'black'}}>{lecture?.title}</Typography>
-            <Typography sx={{color:'gray', fontSize:'15px', marginTop:'auto'}}><button onClick={setShowValue} style={{display:'flex', alignItems:'center',borderRadius:"10px",border:'solid 0.5px gray'}}>{buttonContent}{!show&& <ArrowDropDownIcon/>}{show&&<ArrowDropUpIcon/>}</button></Typography>
+            <Typography variant="h5" sx={{fontWeight:'bold',color:'white'}}>{lecture?.title}</Typography>
+            <Typography sx={{color:'white', fontSize:'15px', marginTop:'auto'}}><button onClick={setShowValue} style={{display:'flex', alignItems:'center',borderRadius:"10px",border:'solid 0.5px gray',backgroundColor:"#202124",color:"white"}}>{buttonContent}{!show&& <ArrowDropDownIcon/>}{show&&<ArrowDropUpIcon/>}</button></Typography>
             </div>
              
              {show && 
-             <div style={{marginTop:'10px'}}>
+             <div style={{marginTop:'10px', color:"white"}}>
               <hr style={{borderTop:'1px dotted gray'}}/>
               <p>Description:</p>
-             <Typography variant="body1" sx={{color:'black',marginTop:-1}}>{lecture?.description}</Typography>
+             <Typography variant="body1" sx={{color:'white',marginTop:-1}}>{lecture?.description}</Typography>
              </div>} 
             
      

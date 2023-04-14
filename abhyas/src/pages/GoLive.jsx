@@ -329,7 +329,7 @@ const GoLive = () => {
             </Grid>
             <Grid item xs={3.5}>
                 <Paper elevation={24} sx={{height:'85vh', borderRadius:"10px"}}>
-                    <ChatRoom width={'20vw'} style={{height:"100vh"}} />
+                    <ChatRoom width={'100%'} height={'100%'}  />
                 </Paper>
             </Grid>
             <Grid xs={12}sx={{display:"flex", alignItems:"center", flexDirection:"column"}}>
