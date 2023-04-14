@@ -201,6 +201,7 @@ return (
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
+              
               <Typography>Lectures</Typography>
             </AccordionSummary>
             <AccordionDetails>
