@@ -115,7 +115,7 @@ const Teacher = () => {
             
             let tempData=doc.data()
             console.log(doc.data())
-            notes.push(<NoteCard {...tempData}/>)
+            notes.push(<NoteCard teacher={true} {...tempData}/>)
         });
         console.log(notes)
         setNotesData(notes)
@@ -127,7 +127,7 @@ const Teacher = () => {
         const querySnapshot = await getDocs(q);
         let lectures = []
         querySnapshot.forEach((doc) => {
-            lectures.push(<LectureCard {...doc.data()}/>)
+            lectures.push(<LectureCard teacher={true} {...doc.data()}/>)
         });
         setLecturesData(lectures)
    
@@ -138,7 +138,7 @@ const Teacher = () => {
         const querySnapshot = await getDocs(q);
         let assignments = []
         querySnapshot.forEach((doc) => {
-            assignments.push(<AssignmentCard {...doc.data()} />)
+            assignments.push(<AssignmentCard teacher={true} {...doc.data()} />)
         });
         setAssignmentsData(assignments)
     }
@@ -151,7 +151,7 @@ const Teacher = () => {
       let quizzes = []
       querySnapshot.forEach((doc) => {
           let tempData=doc.data()
-          quizzes.push(<QuizCard {...tempData}/>)
+          quizzes.push(<QuizCard teacher={true} id={doc.id} {...tempData}/>)
       })
       setQuizzesData(quizzes)
 };
