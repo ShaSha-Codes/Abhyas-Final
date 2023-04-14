@@ -19,7 +19,7 @@ import VerifyCertificate from './pages/VerifyCertificate'
 import QuizPreview from './pages/QuizPreview'
 import CreateQuiz from './pages/CreateQuiz'
 import { Routes,Route } from 'react-router-dom'
-
+import MarketplaceNotes from './pages/MarketplaceNotes'
 const App = () => {
   return (
     <Routes>
@@ -41,6 +41,7 @@ const App = () => {
         <Route path='/Student/Live/Join/:classCode' element={<JoinLive/>} />
         <Route path='/Tutor/:tutorCode' element={<Tutor/>} />
         <Route path='/VerifyCertificate/:certificateCredential' element={<VerifyCertificate/>} />
+        <Route path='/Marketplace/:id' element={<MarketplaceNotes/>} />
         <Route path='/*' element={<PageNotFound/>} />
     </Routes>
   )

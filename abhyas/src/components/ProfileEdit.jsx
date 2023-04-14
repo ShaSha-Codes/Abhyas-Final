@@ -103,6 +103,7 @@ React.useEffect(() => {
     const dataRef = doc(db, "UserInfo", user.email);
       await updateDoc(dataRef, {
         profile: true,
+        favourties: [],
         ...formData
       });
     
