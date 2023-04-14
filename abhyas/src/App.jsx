@@ -18,6 +18,7 @@ import Tutor from './pages/Tutor'
 import VerifyCertificate from './pages/VerifyCertificate'
 import QuizPreview from './pages/QuizPreview'
 import CreateQuiz from './pages/CreateQuiz'
+import StudentQuizPreview from './pages/StudentQuizPreview'
 import { Routes,Route } from 'react-router-dom'
 import MarketplaceNotes from './pages/MarketplaceNotes'
 import Assignment from './pages/Assignment'
@@ -37,6 +38,7 @@ const App = () => {
         <Route path='/Student/:classCode'element={<Student/>} />
         <Route path='/Note/:noteCode'element={<Note/>} />
         <Route path='Quiz/:quizCode'element={<QuizPreview/>} />
+        <Route path='StudentQuiz/:quizCode' element={<StudentQuizPreview />} />
         <Route path="Teacher/CreateQuiz/Create/:classCode" element={<CreateQuiz/>} />
         <Route path='/Lecture/:lecCode'element={<Lecture/>} />
         <Route path='/Teacher/Live/Create/:classCode' element={<GoLive/>} />

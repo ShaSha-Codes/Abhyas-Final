@@ -145,7 +145,7 @@ const scrollableDivRef = React.useRef(null);
 
   return (
     <div>
-        <Stack ref={scrollableDivRef} sx={{display: 'flex',overflow: 'auto',height:'62vh',width:props?.width?props.width:'90vw'}}>
+        <Stack ref={scrollableDivRef} sx={{display: 'flex',overflow: 'auto',height:'67vh',width:props?.width?props.width:'90vw'}}>
            {messageData}
           
         </Stack>

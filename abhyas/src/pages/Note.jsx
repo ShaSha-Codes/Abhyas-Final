@@ -81,8 +81,8 @@ const Note = () => {
   return (
     <SideBar>
         <Grid xs={6}>
-                    <Paper sx={{p:1,width:'100%', bgcolor:"#f9f9f9",borderRadius:0}} elevation={0} >
-                            <Typography variant="h6" component="h2" gutterBottom>
+                    <Paper sx={{p:1,width:'100%', bgcolor:"#f9f9f9",borderRadius:"10px 10px 0px 0px"}} elevation={0} >
+                            <Typography variant="h6" component="h2" sx={{pl:2}} gutterBottom>
                                 {note?.title}
                             </Typography>
                             </Paper>
