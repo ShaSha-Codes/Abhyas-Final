@@ -21,14 +21,15 @@ export default function CertificateCard(props) {
       <Card onClick={handleClick} sx={{cursor: 'pointer',borderRadius:5,minHeight:100,maxHeight:150, maxWidth: 345,display: 'flex', border:"1px solid #f2f2f2", bgcolor:"#f0f0f0" }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="div" variant="h5" sx={{textOverflow:'ellipsis',}}>
+          <Typography component="div" variant="h5" sx={{textOverflow:'ellipsis',}}> 
           {props.title}
           </Typography>
         </CardContent>
       </Box>
       <CardMedia
+
         component="img"
-        sx={{width:100,objectFit:'cover'}}
+        sx={{width:100,objectFit:'cover',bgcolor:"white"}}
         image= {props.logo}
         alt="logo"
       />

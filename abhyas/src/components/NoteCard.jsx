@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import GeoPattern from 'geopattern';
 
 export default function NoteCard(props) {
   const theme = useTheme();
@@ -20,9 +21,11 @@ export default function NoteCard(props) {
     const handleClick=()=>{
         navigate('/Note/'+props.noteCode)
     }
+    var pattern = GeoPattern.generate(props.title);
+    var imgURL = pattern.toDataUri();
   return (
     <Grid md={4} sm={6}xs={12}>
-        <Card onClick={handleClick}  sx={{ marginBottom:'10px',marginRight:'10px',width:'95%',maxWidth:'500px',maxHeight:'120px',display: 'flex' }}>
+        <Card onClick={handleClick}  sx={{ marginBottom:'10px',marginRight:'10px',width:'95%',maxWidth:'500px',maxHeight:'120px',display: 'flex', bgcolor:"#f2f2f2" }}>
             <CardActionArea >
                 <Stack direction="row">
 
@@ -31,7 +34,7 @@ export default function NoteCard(props) {
                     component="img"
                     sx={{ width: 120,height: 120 }}
                     
-                    image={`https://api.dicebear.com/6.x/identicon/svg?seed=`+props.title+`&scale=90&backgroundRotation=0,360,90,80,100,110,180,190,280,300,290&row1=ooxoo,oxxxo,xoxox&backgroundColor=D2E7E7`}
+                    image={imgURL}
                     alt="Live from space album cover"
                 />
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
