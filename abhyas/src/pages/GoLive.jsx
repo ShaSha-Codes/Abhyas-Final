@@ -309,38 +309,48 @@ const GoLive = () => {
         navigate('/Teacher/'+classCode)
       }
       
+      React.useEffect(() => {
+        document.body.style.overflow = "hidden";
+        document.body.style.backgroundColor = "#202124";
+        return () => {
+          document.body.style.overflow = "auto";
+          document.body.style.backgroundColor = "white";
+        };
+      }, []);
+      
 
   return (
-    <Stack>
-        <Grid spacing={2}  container>
-            <Grid item xs={9}>
-                <Paper elevation={24} sx={{height:'77vh',position:'relative'}}>
-                    <video ref={localRef} style={{width:'100%',height:'100%'}} autoPlay playsInline/>
-                    <Stack sx={{position:'absolute',bottom:'10px',right:'40%' }} spacing={3} direction="row">
-                        <Fab color="secondary" aria-label="edit" onClick={toggleMic}>
+    <Stack sx={{bgcolor:"#202124"}}>
+        <Grid spacing={1} pt={1} container>
+            <Grid item xs={8.5}>
+                <Paper elevation={24} sx={{width:'100%', height:"85vh",position:'relative'}}>
+                    <video ref={localRef} style={{width:'100%',height:"85vh",objectFit: "cover",transform: "rotateY(180deg)"}} autoPlay playsInline/>
+                </Paper>
+            </Grid>
+            <Grid item xs={3.5}>
+                <Paper elevation={24} sx={{height:'85vh', borderRadius:"10px"}}>
+                    <ChatRoom width={'20vw'} style={{height:"100vh"}} />
+                </Paper>
+            </Grid>
+            <Grid xs={12}sx={{display:"flex", alignItems:"center", flexDirection:"column"}}>
+            <Stack sx={{position:'absolute',bottom:'20px' }} spacing={3} direction="row">
+                        <Fab color="secondary" sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={toggleMic}>
                             {micActive?<MicNoneIcon />:<MicOffIcon />}
                         </Fab>
-                        <Fab color="secondary" aria-label="edit" onClick={toggleVideo}>
+                        <Fab color="secondary"  sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={toggleVideo}>
                             {videoActive?<VideocamIcon />:<VideocamOffIcon />}
                         </Fab>
-                        <Fab color="secondary" aria-label="edit" onClick={toggleScreenShare}>
+                        <Fab color="secondary"  sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={toggleScreenShare}>
                             <ScreenShareIcon />
                         </Fab>
-                        <Fab color="secondary" aria-label="edit" onClick={handleClickOpen}>
+                        <Fab color="secondary"  sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={handleClickOpen}>
                             <NoteAltIcon />
                         </Fab>
                        
-                        <Fab color="secondary" aria-label="edit" onClick={disconnect}>
+                        <Fab color="secondary"  sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={disconnect}>
                             <CancelIcon />
                         </Fab>
                  </Stack>
-               
-                </Paper>
-            </Grid>
-            <Grid item xs={3}>
-                <Paper elevation={24} sx={{height:'77vh'}}>
-                    <ChatRoom width={'20vw'} style={{height:"100vh"}} />
-                </Paper>
             </Grid>
         </Grid>
         <Box

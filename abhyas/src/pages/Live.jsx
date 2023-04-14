@@ -174,8 +174,6 @@ const Live = () => {
             <video  ref={localRef} style={{minWidth: '100%', minHeight: '100%'}} autoPlay playsInline />
           </Box>
         </Card>
-
-        
         <Box
       sx={{
         display: 'flex',
