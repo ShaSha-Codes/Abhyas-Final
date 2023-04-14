@@ -5,13 +5,16 @@ import {doc,getDoc,updateDoc} from 'firebase/firestore'
 import {db} from '../firebase';
 import { TextField, Typography } from '@mui/material';
 import { Grid,Paper,Box, Button, List, ListItem} from '@mui/material';
+import {  ListItemText, ListItemIcon } from '@mui/material';
+import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
+import { CancelOutlined } from '@mui/icons-material';
 
 
 
 function StudentQuizPreview() {
-
+  
+  
   const [Questions, setQuestions] = useState([]);
-  const [marks,setMarks]=useState(0);
   const [email,setEmail] = useState("");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(null);
@@ -20,11 +23,14 @@ function StudentQuizPreview() {
   const [subject,setSubject]=useState("");
   const [submitBool,setSubmitBool]=useState(false);
   const [TotalMarks,setTotalMarks]=useState(0);
+  const [marks,setMarks]=useState(0);
+  const [ans_arr,setAns_arr]=useState([])
   useEffect(() => {
     (async () => {
       const docRef = doc(db, 'Quizzes', quizCode);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
+        setTotalMarks(docSnap.data().totalMarks)
         setQuestions(docSnap.data().Questions);
         setSubject(docSnap.data().title)
       }
@@ -71,7 +77,9 @@ const handleEmailSubmit=(event)=>{
   const handleAnswerSelected = (answer) => {
     // Check the answer and move to the next question
     const isCorrect = answer === Questions[currentQuestionIndex].correctAnswer;
-     if (isCorrect) {setMarks(prevMarks => prevMarks + 1)};
+    if(isCorrect){setMarks(prev=>prev+parseInt(Questions[currentQuestionIndex].weightage))}
+     setAns_arr(prev=>[...prev,{question:Questions[currentQuestionIndex].text,answer:answer,isCorrect:isCorrect,
+      CorrectAnswer:Questions[currentQuestionIndex].correctAnswer}])
     setCurrentQuestionIndex(prevIndex => prevIndex + 1);
   };
    
@@ -82,7 +90,6 @@ const handleEmailSubmit=(event)=>{
   console.log(email)
   const docRef = doc(db, 'Quizzes', quizCode);  
   const docSnap = await getDoc(docRef);
-  setTotalMarks(docSnap.data().totalMarks)
   console.log(email)
   setSubmitBool(true);
   if (docSnap.exists()) {
@@ -103,12 +110,27 @@ const handleEmailSubmit=(event)=>{
   
   if (submitBool){
       return (
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" sx={{marginTop:"50px"}} >
           <Grid item xs={12} sm={8} md={6}>
-            <Paper style={{ padding: 16 }}>
-              <Typography variant="h5" align="center">
-                You Scored {marks} out of {totalMarks}
+            <Paper style={{ padding: 16,backgroundColor:"#2c3333",color:"White" }} >
+              <Typography variant="h4" align="center" sx={{color:"white"}}>
+                You Scored {marks} out of {TotalMarks}
               </Typography>
+           {   ans_arr.map(({ question, answer, isCorrect, CorrectAnswer }, index) => (
+     <ListItem key={index}>
+    <ListItemText sx={{color:"white"}} primary={question} secondary={`Your answer: ${answer}`} />
+    {isCorrect ? (
+      <ListItemIcon>
+        <CheckCircleOutline style={{ color: 'green' }} />
+      </ListItemIcon>
+    ) : (
+      <ListItemIcon>
+        <CancelOutlined style={{ color: 'red' }} />
+      </ListItemIcon>
+    )}
+    <ListItemText primary={`Correct answer: ${CorrectAnswer}`} />
+  </ListItem>
+))}
             </Paper>
           </Grid>
         </Grid>
@@ -118,13 +140,39 @@ const handleEmailSubmit=(event)=>{
   
  
   if (Questions.length === 0) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
   
   
   if (currentQuestionIndex == Questions.length) {
-    return <div>{marks}</div>;
+    return (
+      <Grid container justifyContent="center" sx={{marginTop:"50px"}} >
+        <Grid item xs={12} sm={8} md={6}>
+          <Paper style={{ padding: 16,backgroundColor:"#2c3333",color:"White" }} >
+            <Typography variant="h5" align="center">
+              You Scored {marks} out of {TotalMarks}
+            </Typography>
+            {   ans_arr.map(({ question, answer, isCorrect, CorrectAnswer }, index) => (
+     <ListItem key={index}>
+    <ListItemText primary={question} secondary={`Your answer: ${answer}`} />
+    {isCorrect ? (
+      <ListItemIcon>
+        <CheckCircleOutline style={{ color: 'green' }} />
+      </ListItemIcon>
+    ) : (
+      <ListItemIcon>
+        <CancelOutlined style={{ color: 'red' }} />
+      </ListItemIcon>
+    )}
+    <ListItemText primary={`Correct answer: ${CorrectAnswer}`} />
+  </ListItem>
+))}
+          </Paper>
+        </Grid>
+      </Grid>
+    );
   }
+
  
  
 
