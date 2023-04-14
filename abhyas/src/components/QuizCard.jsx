@@ -13,6 +13,9 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import {db} from '../firebase'
+import {collection,query,where,getDocs,deleteDoc,doc} from 'firebase/firestore'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 export default function QuizCard(props) {
@@ -21,10 +24,21 @@ export default function QuizCard(props) {
     const handleClick=()=>{
         navigate('/Quiz/'+props.quizCode)
     }
+
+
+    const handleDelete=async ()=>{
+        await deleteDoc(doc(db,'Quizzes',props.id))
+        navigate('/Classroom')
+    }
   return (
     <Grid md={4} sm={6}xs={12}>
-        <Card onClick={handleClick}  sx={{ marginBottom:'10px',marginRight:'10px',width:'95%',maxWidth:'500px',maxHeight:'120px',display: 'flex' }}>
-            <CardActionArea >
+        <Card  sx={{ position:'relative',marginBottom:'10px',marginRight:'10px',width:'95%',maxWidth:'500px',maxHeight:'120px',display: 'flex' }}>
+            {props.teacher &&
+                 <IconButton sx={{zIndex:'100',position:'absolute',top:'10px',right:'10px'}}aria-label="delete" size="large" onClick={handleDelete}>
+                    <DeleteIcon fontSize="small" />
+                </IconButton>
+                }
+            <CardActionArea onClick={handleClick} >
                 <Stack direction="row">
                     <CardMedia
                     component="img"
