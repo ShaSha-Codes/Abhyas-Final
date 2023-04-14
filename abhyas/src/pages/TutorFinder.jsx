@@ -313,7 +313,7 @@ const TutorFinder = () => {
            
           </Toolbar>
         </AppBar>
-      <Grid container>
+      <Grid container height={"100%"}>
         <Grid item xs={6}>
 
           <Map
@@ -323,7 +323,7 @@ const TutorFinder = () => {
               zoom: 1
             }}
             mapboxAccessToken='pk.eyJ1IjoiYW1hZGV1czA2NDAiLCJhIjoiY2xnYzA2NmJ2MWVrajNqbzZ5dDk5c3B1MiJ9.6Z4SZbQ_jRsoXM-hFKU3uQ'
-            style={{width:'100%',height:'100vh'}}
+            style={{width:'100%',height:'100%'}}
             mapStyle="mapbox://styles/mapbox/streets-v9"
           >
                   <Marker longitude={lng1} latitude={lat1} offsetLeft={-20} offsetTop={-10} draggable onDrag={dragMarker1}/>
@@ -334,7 +334,7 @@ const TutorFinder = () => {
           </Grid>
 
           <Grid sx={{display:'flex',justifyContent:'center',alignItems:'center'}} item xs={6}>
-              <Paper elevation={12} sx={{borderRadius:'30px',height:'55vh',width:'50vh'}}>
+              <Paper elevation={12} sx={{borderRadius:'30px',height:'60vh',width:'50vh'}}>
                     <Stack sx={{padding:'30px'}} spacing={1}>
                       <Typography sx={{display:'flex',justifyContent:'center',alignItems:'center'}} variant='h5'>
                           <b>Tutor Description</b>
@@ -389,7 +389,7 @@ const TutorFinder = () => {
                         </ToggleButton>
                       </ToggleButtonGroup>
                         </Stack>
-                      <Button  sx={{marginTop:30,height:'3em'}} variant="contained" onClick={handleSubmission}>
+                      <Button sx={{marginTop:30,height:'3em',backgroundColor:"#3c7979","&:hover": {backgroundColor: '#285252' }}} variant="contained" onClick={handleSubmission}>
                           Submit
                       </Button>
                     </Stack>
@@ -489,17 +489,24 @@ const TutorFinder = () => {
         </Typography>
         }
            {!searchDone && 
-          <Carousel swipe={false} autoPlay={false}>
+          <Carousel swipe={false} autoPlay={false} 
+          navButtonsProps={{          // Change the colors and radius of the actual buttons. THIS STYLES BOTH BUTTONS
+            style: {
+                opacity: 1,
+                backgroundColor: '#3c7979',
+            }
+        }} >
+            
             <Map
             
               initialViewState={{
                 longitude: 72.842949,
                 latitude: 19.133890,
-                zoom: 2
+                zoom: 1.9
               }}
               mapboxAccessToken='pk.eyJ1IjoiYW1hZGV1czA2NDAiLCJhIjoiY2xnYzA2NmJ2MWVrajNqbzZ5dDk5c3B1MiJ9.6Z4SZbQ_jRsoXM-hFKU3uQ'
               style={{width:'100%',height:'95vh'}}
-              mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
+              mapStyle="mapbox://styles/mapbox/navigation-night-v1"
               projection={'globe'}
               
             >
@@ -513,7 +520,7 @@ const TutorFinder = () => {
                     <Typography variant='h5'>
                       <b>Distance:</b>
                     </Typography>
-                    <Slider defaultValue={5} marks={distanceArray} value={distance} onChange={(event)=>setDistance(event.target.value)} aria-label="Default" min={5} max={100} valueLabelDisplay="auto" />
+                    <Slider sx={{color:"#3c7979"}} defaultValue={5} marks={distanceArray} value={distance} onChange={(event)=>setDistance(event.target.value)} aria-label="Default" min={5} max={100} valueLabelDisplay="auto" />
                 </Stack>
               </Paper>
               <Paper sx={{display:'flex',height:'90vh',width:'100vw',justifyContent:'center',alignItems:'center'}}>
@@ -545,7 +552,7 @@ const TutorFinder = () => {
                         </ToggleButton>
                       </ToggleButtonGroup>
 
-                      <Button sx={{fontSize:'1.1em',marginTop:'20px',width:'60%'}} variant="contained" onClick={handleSearch}>Search</Button>
+                      <Button sx={{fontSize:'1.1em',marginTop:'20px',width:'60%',backgroundColor:"#3c7979","&:hover": {backgroundColor: '#285252' }}} variant="contained" onClick={handleSearch}>Search</Button>
 
                   
                     

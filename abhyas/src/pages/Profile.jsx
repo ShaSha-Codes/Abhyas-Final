@@ -83,7 +83,7 @@ const Dashboard = () => {
                       
                     </DialogActions>
                </Dialog>       
-                      <Grid container sx={{height:"100%",bgcolor:"#f2f2f2", borderRadius:"20px"}}>
+                      <Grid container sx={{height:"100%",bgcolor:"#f9f9f9", borderRadius:"20px"}}>
                           <Grid item xs={5.95} sx={{pr:1, pl:1}}>
                               
                               <Typography variant='h6'>
