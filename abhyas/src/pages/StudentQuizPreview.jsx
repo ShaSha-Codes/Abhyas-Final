@@ -107,18 +107,29 @@ const handleEmailSubmit=(event)=>{
    
    
   }
+
+ 
+  if (Questions.length === 0) {
+    return <div>Loading...</div>
+  }
   
-  if (submitBool){
-      return (
-        <Grid container justifyContent="center" sx={{marginTop:"50px"}} >
-          <Grid item xs={12} sm={8} md={6}>
-            <Paper style={{ padding: 16,backgroundColor:"#2c3333",color:"White" }} >
-              <Typography variant="h4" align="center" sx={{color:"white"}}>
-                You Scored {marks} out of {TotalMarks}
-              </Typography>
-           {   ans_arr.map(({ question, answer, isCorrect, CorrectAnswer }, index) => (
+  if(submitBool){
+    const isCorrect=false
+   
+    return (
+      <Grid container direction="row" alignItems="center" sx={{marginTop:"100px",width:"150%",
+      marginLeft:"250px"
+    }}
+      >
+        <Grid item xs={12} sm={8} md={6}>
+          <Paper style={{ padding: 16,backgroundColor:"#2c3333",color:"White" }} >
+            <Typography variant="h5" align="center">
+              You Scored {marks} out of {TotalMarks}
+            </Typography>
+            {   Questions.map((question,{isCorrect},index) => (
      <ListItem key={index}>
-    <ListItemText sx={{color:"white"}} primary={question} secondary={`Your answer: ${answer}`} />
+    <ListItemText primary={`Question :${question.text}`}/>
+    <ListItemText primary={"your answer:None"} />
     {isCorrect ? (
       <ListItemIcon>
         <CheckCircleOutline style={{ color: 'green' }} />
@@ -128,33 +139,29 @@ const handleEmailSubmit=(event)=>{
         <CancelOutlined style={{ color: 'red' }} />
       </ListItemIcon>
     )}
-    <ListItemText primary={`Correct answer: ${CorrectAnswer}`} />
+    <ListItemText primary={`Correct answer: ${question.correctAnswer}`} />
   </ListItem>
 ))}
-            </Paper>
-          </Grid>
+          </Paper>
         </Grid>
-      );
-    };
-  
-  
- 
-  if (Questions.length === 0) {
-    return <div>Loading...</div>
+      </Grid>
+    );
   }
   
-  
+
   if (currentQuestionIndex == Questions.length) {
     return (
-      <Grid container justifyContent="center" sx={{marginTop:"50px"}} >
-        <Grid item xs={12} sm={8} md={6}>
+      <Grid container direction="row"  alignItems="center"
+       sx={{marginTop:"100px",width:"150%",marginLeft:"250px"}}  >
+        <Grid item xs={12} sm={8} md={6} >
           <Paper style={{ padding: 16,backgroundColor:"#2c3333",color:"White" }} >
             <Typography variant="h5" align="center">
               You Scored {marks} out of {TotalMarks}
             </Typography>
             {   ans_arr.map(({ question, answer, isCorrect, CorrectAnswer }, index) => (
      <ListItem key={index}>
-    <ListItemText primary={question} secondary={`Your answer: ${answer}`} />
+    <ListItemText primary={`Question :${question}`} />
+    <ListItemText primary={`Your answer: ${answer}`} />
     {isCorrect ? (
       <ListItemIcon>
         <CheckCircleOutline style={{ color: 'green' }} />
