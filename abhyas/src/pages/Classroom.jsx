@@ -81,7 +81,6 @@ const Classroom = () => {
       await getDocs(q).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         tempData.push(doc.data())
-        
       })})
 
     setStudentCardData(tempData)

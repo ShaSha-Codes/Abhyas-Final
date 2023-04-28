@@ -10,12 +10,14 @@ import useLogout from '../hooks/useLogout';
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase'; // import your firebase config
-import { Card, CardContent, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Card, CardContent, List, Typography } from '@mui/material';
+import ListItemText from '@mui/material/ListItemText';
+import ListItem from '@mui/material/ListItem';
 
 
 function QuizPreview() {
   const [quizzes, setQuizzes] = useState(null);
+  const [students,setStudents]=useState([]);
   const checker=useLogout()
    React.useEffect(()=>{
     checker("Quizzes",quizCode)
@@ -24,22 +26,32 @@ function QuizPreview() {
   const {quizCode}=useParams()
   useEffect(() => {
     (async () => {
-      const docRef = doc(db, 'Quizzes', quizCode);
-      const docSnap = await getDoc(docRef);
+      const docRef1 = doc(db, 'Quizzes', quizCode);
+      const docSnap = await getDoc(docRef1);
       if (docSnap.exists()) {
         setQuizzes(docSnap.data());
       }
     })();
   }, []);
+
+  useEffect(() => {
+      (async()=>{const docRef2=doc(db,'Classes',quizzes.classCode);
+      const docSnap=await getDoc(docRef2);
+      if(docSnap.exists()){
+          setStudents(docSnap.data().students)
+      }
+      })()
+      console.log(students)
+  },[])
   
-  console.log(quizzes)
+  
+ 
   if (!quizzes) return null;
 
   return (
-
 <> 
     <SideBar/>
-   <Grid container direction="row" display="flex" justifyContent="center" alignItems="center" sx={{color:"black"}}> 
+   <Grid container direction="row" display="flex" justifyContent="center" alignItems="center" sx={{color:"black"}}>
     <Typography variant="h4" alignItems="center" sx={{color:"white",textAlign:"center",marginBottom:"30px",
          background: "#2c3333",
          width:"50%",
@@ -49,6 +61,18 @@ function QuizPreview() {
          wordWrap: 'break-word',
         border:"1px solid black",padding:"8px"}}>{quizzes.subject} Quiz</Typography>
       </Grid>
+      <Grid container direction="row" sx={{color:"black",marginLeft:'130px'}}>
+  <Typography variant="h5" align="center" gutterBottom>
+    Students
+  </Typography>
+  <List>
+    {quizzes.students.map((student, index) => (
+      <ListItem key={index}>
+        <ListItemText primary={student.email} secondary={`Marks: ${student.marks}`}/>
+      </ListItem>
+    ))}
+  </List>
+</Grid>
   <Grid container direction="row" display="flex" justifyContent="center" alignItems="center" sx={{color:"black"}} >
     {quizzes.Questions.map((question, index) => (
       <Card key={index} display="flex" sx={{ marginBottom: '16px', width: '80%',marginLeft:"20px",
