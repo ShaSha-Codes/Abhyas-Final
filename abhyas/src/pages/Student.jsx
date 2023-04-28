@@ -34,6 +34,7 @@ import CreateQuiz from './CreateQuiz';
 import Button from '@mui/material/Button';
 import CertificateMaker from '../components/CertificateMaker';
 import AssignmentCard from '../components/AssignmentCard';
+import Fab from '@mui/material/Fab';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -275,7 +276,11 @@ return (
           <AssignmentForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
           <LectureForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
           <NoteForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
-            
+          <Fab color="secondary" aria-label="edit" sx={{position:'fixed',bottom:'10px',right:'10px'}}
+            onClick={()=>navigate('/Student/Live/Join/'+classCode)}
+          >
+              <LiveTvIcon />
+            </Fab>
       </Box>
   </SideBar>
   </>
