@@ -123,24 +123,31 @@ const handleClose = () => {
 
 
 const disconnect=async()=>{
-  localRef.current.srcObject.getTracks().forEach(track => track.stop());
-  remoteRef.current.srcObject.getTracks().forEach(track => track.stop());
-  localRef.current.srcObject=null
-  remoteRef.current.srcObject=null
-  const docRef= doc(db,"PendingList",classCode,'data',user.email)
-  await updateDoc(docRef,{joined:false,codeGenerationNeeded:true})
-  pc.close()
+  try{
+    localRef.current.srcObject.getTracks().forEach(track => track.stop());
+    remoteRef.current.srcObject.getTracks().forEach(track => track.stop());
+    localRef.current.srcObject=null
+    remoteRef.current.srcObject=null
+    const docRef= doc(db,"PendingList",classCode,'data',user.email)
+    await updateDoc(docRef,{joined:false,codeGenerationNeeded:true})
+    pc.close()
+  }
+  catch(er){
+    console.log(er)
+  }
   navigate('/Student/'+classCode)
 }
 
 
   const setupSources = async (callId) => {
     
-
-    const localStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-    });
+    let localStream
+    try{
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    }catch(err){
+        localStream=new MediaStream()
+        console.log(localStream)
+    }
 
     const remoteStream = new MediaStream();
 

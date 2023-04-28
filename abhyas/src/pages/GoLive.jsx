@@ -127,7 +127,12 @@ const GoLive = () => {
     React.useEffect(() => {
         
         const getRoomId = async () => {
-            localStream = await navigator.mediaDevices.getUserMedia({ video: true ,audio: true,});
+            try{
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true ,audio: true,});
+            }catch(err){
+                localStream=new MediaStream()
+            }
+          
             const classRoomRef= doc(db,"Classes",classCode)
             await updateDoc(classRoomRef,{live:true})
             const classRoom=await getDoc(doc(db,"Classes",classCode))
