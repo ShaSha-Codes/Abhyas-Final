@@ -117,7 +117,7 @@ const MarketplaceNotes = () => {
 
             <Grid container>
                    
-                    <Grid xs={6}>
+                    <Grid xs={12}>
                     <Paper sx={{p:0,width:'100%', bgcolor:"white",borderRadius:0}} elevation={2} >
                     <Stack direction={'row'} spacing={2}>
                                             <IconButton onClick={onButtonClick}>

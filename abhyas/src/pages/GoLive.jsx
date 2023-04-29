@@ -339,20 +339,30 @@ const GoLive = () => {
             </Grid>
             <Grid xs={12}sx={{display:"flex", alignItems:"center", flexDirection:"column"}}>
             <Stack sx={{position:'absolute',bottom:'20px' }} spacing={3} direction="row">
-                        <Fab color="secondary" sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={toggleMic}>
+                        <Fab color="secondary" sx={{bgcolor:"#3c7979","&:hover": {
+                  backgroundColor: '#285252'
+                },}} aria-label="edit" onClick={toggleMic}>
                             {micActive?<MicNoneIcon />:<MicOffIcon />}
                         </Fab>
-                        <Fab color="secondary"  sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={toggleVideo}>
+                        <Fab color="secondary"  sx={{bgcolor:"#3c7979","&:hover": {
+                  backgroundColor: '#285252'
+                },}} aria-label="edit" onClick={toggleVideo}>
                             {videoActive?<VideocamIcon />:<VideocamOffIcon />}
                         </Fab>
-                        <Fab color="secondary"  sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={toggleScreenShare}>
+                        <Fab color="secondary"  sx={{bgcolor:"#3c7979","&:hover": {
+                  backgroundColor: '#285252'
+                },}} aria-label="edit" onClick={toggleScreenShare}>
                             <ScreenShareIcon />
                         </Fab>
-                        <Fab color="secondary"  sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={handleClickOpen}>
+                        <Fab color="secondary"  sx={{bgcolor:"#3c7979","&:hover": {
+                  backgroundColor: '#285252'
+                },}} aria-label="edit" onClick={handleClickOpen}>
                             <NoteAltIcon />
                         </Fab>
                        
-                        <Fab color="secondary"  sx={{bgcolor:"#3c7979"}} aria-label="edit" onClick={disconnect}>
+                        <Fab color="secondary"  sx={{bgcolor:"#3c7979","&:hover": {
+                  backgroundColor: '#285252'
+                },}} aria-label="edit" onClick={disconnect}>
                             <CancelIcon />
                         </Fab>
                  </Stack>
