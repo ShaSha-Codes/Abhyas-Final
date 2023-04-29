@@ -276,7 +276,9 @@ return (
           <AssignmentForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
           <LectureForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
           <NoteForm speedDialValue={speedDialValue} setSpeedDialValue={setSpeedDialValue}/>
-          <Fab color="secondary" aria-label="edit" sx={{position:'fixed',bottom:'10px',right:'10px'}}
+          <Fab color="secondary" aria-label="edit" sx={{position:'fixed',bottom:'10px',right:'10px',bgcolor:"#3c7979","&:hover": {
+                  backgroundColor: '#285252'
+                },}}
             onClick={()=>navigate('/Student/Live/Join/'+classCode)}
           >
               <LiveTvIcon />
