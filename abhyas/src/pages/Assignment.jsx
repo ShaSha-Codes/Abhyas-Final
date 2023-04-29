@@ -120,6 +120,7 @@ const Assignment = () => {
             let classData=classSnap.data()
 
             if(classData.teacher===user.email){
+             
                 setUserType('Teacher')
                 let newTeacherDataList=[]
                 let tempStudentList=classData.students

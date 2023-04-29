@@ -84,7 +84,7 @@ const Dashboard = () => {
                     </DialogActions>
                </Dialog>       
                       <Grid container sx={{height:"100%",bgcolor:"#f9f9f9", borderRadius:"20px"}}>
-                          <Grid item xs={5.95} sx={{pr:1, pl:1}}>
+                          <Grid item xs={5.95} sx={{p:2}}>
                               
                               <Typography variant='h6'>
                               <strong>Email: </strong> {user.email}
@@ -103,7 +103,7 @@ const Dashboard = () => {
                           </Grid>
                           <Grid xs={0.1} sx={{bgcolor:"white"}}>
                           </Grid>
-                          <Grid item xs={5.95} sx={{pl:1}}>
+                          <Grid item xs={5.95} sx={{p:2}}>
                                 <h3 style={{marginTop:0}}>Ongoing Activities:</h3>
                          </Grid>
                       </Grid>

@@ -11,6 +11,7 @@ import { CancelOutlined } from '@mui/icons-material';
 
 
 
+
 function StudentQuizPreview() {
   
   
@@ -24,7 +25,10 @@ function StudentQuizPreview() {
   const [submitBool,setSubmitBool]=useState(false);
   const [TotalMarks,setTotalMarks]=useState(0);
   const [marks,setMarks]=useState(0);
-  const [ans_arr,setAns_arr]=useState([])
+  const [ans_arr,setAns_arr]=useState([]);
+  const [emailBool,setEmailBool]=useState(false);
+
+   
   useEffect(() => {
     (async () => {
       const docRef = doc(db, 'Quizzes', quizCode);
@@ -37,14 +41,14 @@ function StudentQuizPreview() {
     })();
   }, []);
    
-
+  
 
 
  const handleEmail=(e)=>{
     setEmail(e.target.value)
  }
  
-const [emailBool,setEmailBool]=useState(false)
+
 
 
 const handleEmailSubmit=(event)=>{
@@ -55,6 +59,7 @@ const handleEmailSubmit=(event)=>{
   
 
   // Set up the timer
+
   useEffect(() => {
     if (emailBool && Questions.length > 0 && currentQuestionIndex < Questions.length) {
       const timeLimit = Questions[currentQuestionIndex].timer * 60
@@ -82,7 +87,8 @@ const handleEmailSubmit=(event)=>{
       CorrectAnswer:Questions[currentQuestionIndex].correctAnswer}])
     setCurrentQuestionIndex(prevIndex => prevIndex + 1);
   };
-   
+  
+
   
   //fetching the data from the database and updating the student's array
   
@@ -107,18 +113,27 @@ const handleEmailSubmit=(event)=>{
    
    
   }
+   
   
-  if (submitBool){
-      return (
-        <Grid container justifyContent="center" sx={{marginTop:"50px"}} >
-          <Grid item xs={12} sm={8} md={6}>
-            <Paper style={{ padding: 16,backgroundColor:"#2c3333",color:"White" }} >
-              <Typography variant="h4" align="center" sx={{color:"white"}}>
-                You Scored {marks} out of {TotalMarks}
-              </Typography>
-           {   ans_arr.map(({ question, answer, isCorrect, CorrectAnswer }, index) => (
+ 
+  
+  if(submitBool){
+    const isCorrect=false
+   
+    return (
+      <Grid container direction="row" alignItems="center" sx={{marginTop:"100px",width:"150%",
+      marginLeft:"250px"
+    }}
+      >
+        <Grid item xs={12} sm={8} md={6}>
+          <Paper style={{ padding: 16,backgroundColor:"#2c3333",color:"White" }} >
+            <Typography variant="h5" align="center">
+              You Scored {marks} out of {TotalMarks}
+            </Typography>
+            {   ans_arr.map(({ question, answer, isCorrect, CorrectAnswer }, index) => (
      <ListItem key={index}>
-    <ListItemText sx={{color:"white"}} primary={question} secondary={`Your answer: ${answer}`} />
+    <ListItemText primary={`Question :${question}`} />
+    <ListItemText primary={`Your answer: ${answer}`} />
     {isCorrect ? (
       <ListItemIcon>
         <CheckCircleOutline style={{ color: 'green' }} />
@@ -131,30 +146,26 @@ const handleEmailSubmit=(event)=>{
     <ListItemText primary={`Correct answer: ${CorrectAnswer}`} />
   </ListItem>
 ))}
-            </Paper>
-          </Grid>
+          </Paper>
         </Grid>
-      );
-    };
-  
-  
- 
-  if (Questions.length === 0) {
-    return <div>Loading...</div>
+      </Grid>
+    );
   }
   
   
   if (currentQuestionIndex == Questions.length) {
     return (
-      <Grid container justifyContent="center" sx={{marginTop:"50px"}} >
-        <Grid item xs={12} sm={8} md={6}>
+      <Grid container direction="row"  alignItems="center"
+       sx={{marginTop:"100px",width:"150%",marginLeft:"250px"}}  >
+        <Grid item xs={12} sm={8} md={6} >
           <Paper style={{ padding: 16,backgroundColor:"#2c3333",color:"White" }} >
             <Typography variant="h5" align="center">
               You Scored {marks} out of {TotalMarks}
             </Typography>
             {   ans_arr.map(({ question, answer, isCorrect, CorrectAnswer }, index) => (
      <ListItem key={index}>
-    <ListItemText primary={question} secondary={`Your answer: ${answer}`} />
+    <ListItemText primary={`Question :${question}`} />
+    <ListItemText primary={`Your answer: ${answer}`} />
     {isCorrect ? (
       <ListItemIcon>
         <CheckCircleOutline style={{ color: 'green' }} />
@@ -173,12 +184,13 @@ const handleEmailSubmit=(event)=>{
     );
   }
 
+  
  
- 
-
-  if(emailBool){return(
+   
+  if(emailBool){
+    return(
     <>
-      <Typography>{subject}</Typography>
+      <center><Typography>{subject}</Typography></center>
       <QuestionCard index={currentQuestionIndex} question={Questions[currentQuestionIndex]} 
       timeRemaining={timeRemaining} onAnswerSelected={handleAnswerSelected} />
       <Button  
@@ -191,7 +203,10 @@ Submit
 </Button>
     </>
   )}
-  else{ return(
+  
+  
+  else{ 
+    return(
     <>
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
   <form onSubmit={handleEmailSubmit} style={{ display: 'flex', flexDirection: 'column', 
@@ -209,6 +224,7 @@ Submit
 
   )}
 }
+
 
 const QuestionCard = ({index, question, onAnswerSelected, timeRemaining }) => {
   return (
@@ -238,6 +254,7 @@ const QuestionCard = ({index, question, onAnswerSelected, timeRemaining }) => {
 </Box>
   );
 }
+
 
 
 
