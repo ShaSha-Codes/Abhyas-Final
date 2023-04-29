@@ -123,14 +123,17 @@ const Marketplace = () => {
       const docRef = doc(db, "UserInfo", user.email);
       const docSnap = await getDoc(docRef);
       let data=docSnap.data().favourites
+
       let tempArr=[]
       for(let i=0;i<data.length;i++){
         let temp=await getDoc(doc(db, "Marketplace", data[i]));
         tempArr.push(temp.data())
       }
       setFavorites(tempArr)
+
     }
     getFavourites()
+
 
 
   },[])
