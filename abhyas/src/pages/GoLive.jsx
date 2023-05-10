@@ -328,12 +328,12 @@ const GoLive = () => {
     <Stack sx={{bgcolor:"#202124"}}>
         <Grid spacing={1} pt={1} container>
             <Grid item xs={8.5}>
-                <Paper elevation={24} sx={{width:'100%', height:"85vh",position:'relative'}}>
-                    <video ref={localRef} style={{width:'100%',height:"85vh",objectFit: "cover",transform: "rotateY(180deg)"}} autoPlay playsInline/>
+                <Paper elevation={24} sx={{width:'100%', height:"80vh",position:'relative'}}>
+                    <video ref={localRef} style={{width:'100%',height:"80vh",objectFit: "cover",transform: "rotateY(180deg)"}} autoPlay playsInline/>
                 </Paper>
             </Grid>
             <Grid item xs={3.5}>
-                <Paper elevation={24} sx={{height:'85vh', borderRadius:"10px"}}>
+                <Paper elevation={24} sx={{height:'80vh', borderRadius:"10px"}}>
                     <ChatRoom width={'100%'} height={'100%'}  />
                 </Paper>
             </Grid>
@@ -376,6 +376,7 @@ const GoLive = () => {
             overflow: 'auto',
             width: '98vw',
             height:'20vh',
+            zIndex:100,
             scrollSnapType: 'x mandatory',
             '& > *': {
             scrollSnapAlign: 'center',
