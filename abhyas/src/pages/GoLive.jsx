@@ -418,9 +418,9 @@ const GoLive = () => {
                     </Card>
                     
                     
-                    <Card orientation="horizontal"  variant="outlined" sx={{display:remoteRef[4].joined?'block':'none',gap: 2, '--Card-padding': (theme) => theme.spacing(2),}}>
+                    <Card orientation="horizontal"  variant="outlined" sx={{display:liveStudents[4].joined?'block':'none',gap: 2, '--Card-padding': (theme) => theme.spacing(2),}}>
                         <Box sx={{ whiteSpace: 'nowrap' }}>
-                            <video ref={remoteRef[4]} style={{width:'15vw',height:'100%',display:liveStudents[4].joined?'block':'none'}} autoPlay playsInline/>
+                            <video ref={remoteRef[4]} style={{width:'15vw',height:'100%'}} autoPlay playsInline/>
                         </Box>
                     </Card>
                   
